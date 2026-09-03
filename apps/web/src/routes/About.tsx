@@ -11,6 +11,7 @@ export function AboutPage() {
         <p>Aucune donnée personnelle n'est collectée. Les favoris et réglages restent dans ton navigateur. Les abonnements aux notifications sont supprimés après l'événement.</p>
         <p className="text-muted">Pour faire un don, passe toujours par <a href="https://zevent.fr/don" className="underline" target="_blank" rel="noreferrer">zevent.fr/don</a>.</p>
         <p><Link to="/associations" className="underline">Les associations bénéficiaires</Link> · <Link to="/legal" className="underline">Mentions légales et confidentialité</Link></p>
+        <p className="text-muted">Fait par <a href="https://www.linkedin.com/in/rapha%C3%ABl-plassart/" className="underline" target="_blank" rel="noreferrer">raph</a>. Le code est ouvert sur <a href="https://github.com/raphplt/zevent-radar" className="underline" target="_blank" rel="noreferrer">GitHub</a>.</p>
       </Card>
     </div>
   );

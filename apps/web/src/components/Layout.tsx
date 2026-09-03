@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Activity, BookOpen, Compass, ExternalLink, HeartHandshake, Info, Radar, Radio, Scale, Settings, Star, Users, WifiOff } from "lucide-react";
+import { Activity, BookOpen, Compass, ExternalLink, Github, HeartHandshake, Info, Linkedin, Radar, Radio, Scale, Settings, Star, Users, WifiOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router";
 import { deltaOver } from "@zevent-radar/radar-engine";
@@ -99,7 +99,11 @@ export function Layout() {
             <BookOpen size={18} />InGDoc<ExternalLink size={12} className="ml-auto" />
           </a>
         </div>
-        <p className="px-5 pb-4 text-[11px] text-muted">Projet communautaire non officiel. Dons sur zevent.fr.</p>
+        <p className="px-5 pb-1 text-[11px] text-muted">Projet communautaire non officiel. Dons sur zevent.fr.</p>
+        <p className="flex items-center gap-3 px-5 pb-4 text-[11px] text-muted">
+          <a href="https://github.com/raphplt/zevent-radar" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-fg"><Github size={12} />Code source</a>
+          <a href="https://www.linkedin.com/in/rapha%C3%ABl-plassart/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-fg"><Linkedin size={12} />raph</a>
+        </p>
       </aside>
 
       <div className="flex min-h-dvh flex-1 flex-col">
