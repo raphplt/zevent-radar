@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Activity, Compass, Info, Radar, Radio, Scale, Settings, Star, Users, WifiOff } from "lucide-react";
+import { Activity, BookOpen, Compass, ExternalLink, HeartHandshake, Info, Radar, Radio, Scale, Settings, Star, Users, WifiOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router";
 import { deltaOver } from "@zevent-radar/radar-engine";
@@ -17,8 +17,9 @@ const TABS = [
 ];
 
 const SECONDARY = [
+  { to: "/associations", label: "Les associations", icon: HeartHandshake },
   { to: "/settings", label: "Réglages", icon: Settings },
-  { to: "/status", label: "État des sources", icon: Activity },
+  { to: "/status", label: "État du service", icon: Activity },
   { to: "/about", label: "À propos", icon: Info },
   { to: "/legal", label: "Mentions légales", icon: Scale }
 ];
@@ -93,7 +94,12 @@ export function Layout() {
             ))}
           </ul>
         </nav>
-        <p className="px-5 py-4 text-[11px] text-muted">Projet communautaire non officiel. Dons sur zevent.fr.</p>
+        <div className="px-3 pb-2">
+          <a href="https://zevent.gdoc.fr/" target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-fg">
+            <BookOpen size={18} />InGDoc<ExternalLink size={12} className="ml-auto" />
+          </a>
+        </div>
+        <p className="px-5 pb-4 text-[11px] text-muted">Projet communautaire non officiel. Dons sur zevent.fr.</p>
       </aside>
 
       <div className="flex min-h-dvh flex-1 flex-col">

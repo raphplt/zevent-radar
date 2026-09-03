@@ -1,5 +1,6 @@
 import { Radar as RadarIcon } from "lucide-react";
 import { Link } from "react-router";
+import { AssociationsBanner } from "@/components/AssociationsBanner";
 import { Feed } from "@/components/Feed";
 import { MissedBanner } from "@/components/MissedBanner";
 import { RADAR_LABELS, RadarCard, RadarHero } from "@/components/RadarCard";
@@ -46,6 +47,7 @@ export function RadarPage() {
           <Stat label="Goals proches" value={count(radar.length)} />
         </div>
       </div>
+      <AssociationsBanner />
 
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-8">
         <div className="space-y-6">

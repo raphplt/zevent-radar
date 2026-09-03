@@ -1,0 +1,317 @@
+{
+  "source": "https://zevent.fr/associations",
+  "edition": 2026,
+  "associations": [
+    {
+      "slug": "fdf",
+      "name": "Fondation de France",
+      "link": "https://www.fondationdefrance.org/fr",
+      "logo": "/assos/fdf.webp",
+      "since": null,
+      "collector": true,
+      "description": "Pour le ZEVENT 2026, la Fondation de France assure la collecte des dons et le reversement aux 22 associations bénéficiaires de l’opération. La Fondation de France, premier réseau de philanthropie en France",
+      "usage": []
+    },
+    {
+      "slug": "helebor",
+      "name": "Helebor",
+      "link": "https://www.helebor.fr/",
+      "logo": "/assos/helebor.webp",
+      "since": 2025,
+      "collector": false,
+      "description": "HELEBOR crée et développe des projets en soins palliatifs qui contribuent à l’amélioration de la qualité de vie des personnes gravement malades et de leurs proches.",
+      "usage": [
+        "HELEBOR pourra franchir une étape clé dans le développement de ses projets :",
+        "poursuivre l’aménagement de la Maison de répit à Agen pour des patients en soins palliatifs",
+        "aménager un patio à Pau en espace de motricité et de stimulation sensorielle pour des enfants gravement malades avec des troubles moteurs, dont certains sont pris en charge en soins palliatifs précoces."
+      ]
+    },
+    {
+      "slug": "bureauxducoeur",
+      "name": "Bureau du Cœur",
+      "link": "https://www.bureauxducoeur.org",
+      "logo": "/assos/bureauxducoeur.webp",
+      "since": 2024,
+      "collector": false,
+      "description": "Il y a aujourd’hui plus de 330 000 personnes sans logement pérenne en France, tandis que les bureaux ne sont occupés que 30% du temps : la nuit, et le week-end, ils sont vides.",
+      "usage": [
+        "Grâce au ZEVENT, ce qui n'était au départ qu'une intuition est devenu une réalité à grande échelle. Concrètement, ce sont déjà plus de 1 000 personnes qui ont pu dormir à l’abri dans des bureaux d’entreprises, partout en France.",
+        "Aujourd’hui, ce soutien nous donne les moyens de changer d’échelle, en mobilisant toujours plus d’entreprises et de salarié·es pour répondre à des besoins qui ne cessent de croître.",
+        "Demain, il va nous permettre d’aller encore plus loin : faire de l’accueil en entreprise un réflexe solidaire partout en France, toucher encore plus de vies et démontrer qu'avec des solutions simples, on peut avoir un impact immense."
+      ]
+    },
+    {
+      "slug": "chapitre2",
+      "name": "Chapitre 2",
+      "link": "https://chapitre2.org/",
+      "logo": "/assos/chapitre2.webp",
+      "since": 2024,
+      "collector": false,
+      "description": "Chapitre 2 accompagne les jeunes entre 14 et 25 ans en situation de vulnérabilité à s’insérer professionnellement et socialement dans la vie, vers l’autonomie. L’accès à l’autonomie est un parcours long et complexe pour les jeunes en situation de vulnérabilité ou sans soutien. Chapitre 2 propose une offre de service globale qui permet d’éviter les ruptures de parcours.",
+      "usage": [
+        "Grâce à la collecte du ZEVENT 2024, Chapitre 2 a pu ouvrir deux nouvelles antennes (à Marseille et dans le Val-de-Marne) mais aussi lancer des actions en Seine-Saint-Denis. Au total, cela a permis d'accompagner environ 100 jeunes supplémentaires sur ces nouveaux territoires.",
+        "En 2026, ces actions récemment lancées seront déployées plus largement et permettront d'accompagner un nombre de jeunes encore plus important."
+      ]
+    },
+    {
+      "slug": "wwf",
+      "name": "WWF",
+      "link": "https://www.wwf.fr/",
+      "logo": "/assos/wwf.webp",
+      "since": 2022,
+      "collector": false,
+      "description": "Depuis 1973, le WWF France agit au quotidien afin d'offrir aux générations futures une planète vivante. Nous œuvrons pour mettre un frein à la dégradation de l'environnement et construire un avenir où les humains vivent en harmonie avec la nature.",
+      "usage": [
+        "Poursuivre le travail de CIBEL pour sa partie bassin du Congo pendant au moins deux ans, et surtout en République du Congo.",
+        "Protéger l’un des derniers refuges majeurs du lion africain grâce à une action de terrain mesurable et locale : Sauver la part du lion au Zimbabwe\". Ce projet vise à enrayer le déclin des lions d’Afrique en protégeant une population clé dans le parc national de Hwange, au Zimbabwe,"
+      ]
+    },
+    {
+      "slug": "msf",
+      "name": "MSF",
+      "link": "https://www.msf.fr/",
+      "logo": "/assos/msf.webp",
+      "since": 2018,
+      "collector": false,
+      "description": "Médecins Sans Frontières (MSF) est une association médicale humanitaire internationale, créée en 1971 à Paris par des médecins et des journalistes.",
+      "usage": [
+        "MSF pourra renforcer ses interventions médicales auprès de populations touchées par des crises humanitaires, des conflits armés ou des catastrophes naturelles.",
+        "Ces fonds permettront de déployer rapidement des équipes médicales sur le terrain, d’assurer des soins d’urgence et d’apporter un soutien vital aux personnes les plus vulnérables.",
+        "Concrètement, la collecte contribuera à financer des consultations médicales, des soins hospitaliers, des campagnes de vaccination et l’accès aux médicaments essentiels, dans plus de 70 pays.",
+        "Elle permettra également à MSF de maintenir sa capacité d’intervention rapide, indépendante et impartiale, afin de répondre aux urgences là où les besoins sont les plus critiques."
+      ]
+    },
+    {
+      "slug": "nightline",
+      "name": "Nightline",
+      "link": "https://www.nightline.fr/",
+      "logo": "/assos/nightline.webp",
+      "since": 2025,
+      "collector": false,
+      "description": "Les chiffres sur la santé mentale des jeunes en France sont alarmants. En 2023, Santé Publique France indique que les jeunes sont 21 % à être concernés par la dépression, contre 11,7 % en 2017. C'est pour répondre à cet enjeu de santé publique majeur que Nightline se mobilise depuis dix ans.",
+      "usage": [
+        "Les chiffres sur la santé mentale des jeunes en France sont alarmants. Par exemple, plus d’un jeune sur deux déclare avoir déjà été affecté par un problème de santé mentale.",
+        "Vos dons permettront à Nightline de continuer à répondre à cet enjeu de santé publique majeur :",
+        "8 nouvelles académies couvertes (dont la Nouvelle-Calédonie), pour toujours plus d'actions de proximité sur les campus : Fresque de la Santé mentale®, dispositif Sentinelles étudiantes, interventions auprès des jeunes.",
+        "Dans le cadre de la Grande Cause Nationale santé mentale, Nightline continuera de porter haut la voix des jeunes, pour que le sujet reste une priorité de société."
+      ]
+    },
+    {
+      "slug": "solidaritepaysans",
+      "name": "Solidarité Paysans",
+      "link": "https://www.solidarite-paysans.org/",
+      "logo": "/assos/solidaritepaysans.webp",
+      "since": 2024,
+      "collector": false,
+      "description": "Pour défendre et accompagner les familles, aider les agriculteurs et agricultrices à faire valoir leurs droits, préserver l'emploi et lutter contre la précarité, des agriculteurs ont créé Solidarité Paysans, mouvement de lutte contre l'exclusion en milieu rural. L'association Solidarité Paysans regroupe des associations locales qui agissent dans toute la France par un réseau de bénévoles et salarié.es.",
+      "usage": [
+        "Et ce n’est que le début ! Votre générosité va permettre d’amplifier ces actions, afin de mettre en place des conditions d’exercice du métier de paysan qui soient dignes et qui remettent les paysans et paysannes au centre du système agricole,"
+      ]
+    },
+    {
+      "slug": "save_the_children",
+      "name": "Save the Children",
+      "link": "https://www.savethechildren.net/",
+      "logo": "/assos/save_the_children.webp",
+      "since": 2016,
+      "collector": false,
+      "description": "Save the Children est une ONG qui défend les droits de l'enfant à travers le monde. Chaque année, nous atteignons des dizaines de millions d’enfants dans plus de 100 pays grâce à notre travail qui change des vies.",
+      "usage": [
+        "Le Soudan fait face à une crise humanitaire majeure. Plus de 30,7 millions de personnes, dont 17,3 millions d’enfants, ont besoin d’une aide urgente. Présente dans 12 des 18 États du pays, Save the Children apporte une assistance vitale en santé, nutrition, éducation, protection de l’enfance,",
+        "Grâce aux dons, nous pourrons :",
+        "fournir des soins médicaux essentiels et renforcer la prise en charge de la malnutrition ;",
+        "soutenir les mères et les bébés pour prévenir la malnutrition ;"
+      ]
+    },
+    {
+      "slug": "amnesty",
+      "name": "Amnesty International",
+      "link": "https://www.amnesty.fr/",
+      "logo": "/assos/amnesty.webp",
+      "since": 2020,
+      "collector": false,
+      "description": "Amnesty International est une ONG indépendante qui lutte pour la liberté d’expression et contre les discriminations. L’association milite pour le respect et la défense des droits humains partout dans le monde, et veille à garantir les libertés, à mettre fin aux discriminations, à protéger les populations civiles et à obtenir justice, avec force et détermination.",
+      "usage": [
+        "Grâce aux dons qui seront collectés dans le cadre du ZEVENT 2026, Amnesty International France agira de façon très concrète pour défendre les droits humains en France et dans le monde.",
+        "Les dons permettront notamment de soutenir l’opération emblématique Changer leur histoire, qui permet chaque année, d’aider directement des personnes injustement emprisonnées ou menacées.",
+        "À l’international, les dons soutiendront aussi des programmes essentiels pour lutter contre la désinformation, défendre la justice climatique et protéger les défenseur·es des droits humains. Concrètement, cela permettra d’informer, de mobiliser,"
+      ]
+    },
+    {
+      "slug": "action_contre_la_faim",
+      "name": "Action contre la Faim",
+      "link": "https://www.actioncontrelafaim.org/",
+      "logo": "/assos/action_contre_la_faim.svg",
+      "since": 2021,
+      "collector": false,
+      "description": "En 2025, 673 millions de personnes souffrent de la faim dans le monde. L’ ONG internationale humanitaire française Action contre la Faim se bat contre cette injustice depuis 47 ans. Nos actions humanitaires se concentrent sur la prévention, le dépistage et le traitement de la sous-nutrition.",
+      "usage": [
+        "Vos dons permettront à Action contre la Faim de soutenir ses actions dans deux pays, la République centrafricaine et l’Irak ;",
+        "En RCA, dans un pays qui fait face à une baisse drastique des financements mondiaux malgré une situation humanitaire critique, ils permettront :",
+        "De poursuivre nos actions pour que les communautés, et principalement les enfants de moins de cinq ans et les femmes enceintes et allaitantes, aient accès aux soins de santé notamment en formant les agents de santé,",
+        "De soutenir la relance agricole tout en aidant les familles à développer d’autres sources de revenus"
+      ]
+    },
+    {
+      "slug": "croix_rouge",
+      "name": "Croix-Rouge",
+      "link": "https://www.croix-rouge.fr/",
+      "logo": "/assos/croix_rouge.webp",
+      "since": 2017,
+      "collector": false,
+      "description": "Animée par le principe fondamental d'Humanité, la Croix-Rouge française est en première ligne pour préparer et protéger les populations, et renforcer la résilience collective face aux défis croissants de notre monde. Dans un contexte où les crises s'intensifient et l'imprévu est constant, nos volontaires agissent sans relâche.",
+      "usage": [
+        "Vos dons permettront à la Croix-Rouge française :",
+        "d’équiper en défibrillateur et matériel de secouriste les “Premiers Répondants”, des bénévoles secouristes formés et équipés d’un défibrillateur portatif qui interviennent en ultra-proximité en cas d’arrêt cardiaque, avant l’arrivée des secours,",
+        "de moderniser et entretenir le parc de Véhicules de Premiers Secours à Personnes de la Croix-Rouge, les ambulances qui permettent aux secouristes d’intervenir sur les lieux d’urgence avec leur matériel,",
+        "de prévenir et sensibiliser plus d'élèves aux risques naturels dans les territoires ultra marins avec le module \"Paré pas Paré\""
+      ]
+    },
+    {
+      "slug": "institut_pasteur",
+      "name": "Institut Pasteur",
+      "link": "https://www.pasteur.fr/fr",
+      "logo": "/assos/institut_pasteur.webp",
+      "since": 2019,
+      "collector": false,
+      "description": "L’Institut Pasteur est une fondation à but non lucratif dont la mission est de contribuer à la prévention et au traitement des maladies, en priorité infectieuses, par la recherche, l'innovation, l’enseignement, et des actions de santé publique.",
+      "usage": [
+        "Le recherche sur le microbiote est l’un des domaines les plus prometteurs de la médecine actuelle. Mieux comprendre ces milliards de micro-organismes qui vivent dans notre corps pourrait transformer la prévention et le traitement de nombreuses maladies, avec des approches plus personnalisées,",
+        "À l’Institut Pasteur, les fonds collectés lors du ZEVENT 2026 permettront de :",
+        "financer des recherches transdisciplinaires pour mieux comprendre le microbiote",
+        "et accélérer le développement de nouvelles solutions visant à mieux soigner les maladies, mais aussi à les prévenir."
+      ]
+    },
+    {
+      "slug": "sea_shepherd",
+      "name": "Sea Shepherd France",
+      "link": "https://www.seashepherd.fr/",
+      "logo": "/assos/sea_shepherd.webp",
+      "since": 2022,
+      "collector": false,
+      "description": "Sea Shepherd France est une association de défense de l'Océan spécialisée dans la lutte contre le braconnage et dans la sensibilisation du grand public aux enjeux liés à la préservation de la vie marine.",
+      "usage": [
+        "Tous ces projets ont été rendus possibles en grande partie grâce aux dons collectés lors de l’édition 2022. Toutes ces campagnes se poursuivent aujourd’hui et nécessitent des financements,"
+      ]
+    },
+    {
+      "slug": "lpo",
+      "name": "LPO",
+      "link": "https://www.lpo.fr/",
+      "logo": "/assos/lpo.webp",
+      "since": 2022,
+      "collector": false,
+      "description": "La Ligue pour la Protection des Oiseaux (LPO), est l’un des plus importantes associations françaises dédiées à la protection de la nature. Les oiseaux sont d’excellents indicateurs de la santé des écosystèmes. Là où ils se portent mal, c’est toute le vivant qui souffre. Mais des solutions existent !",
+      "usage": [
+        "Les dons permettront de mettre en œuvre des programmes de protection de quatre espèces d’oiseaux emblématiques de nos milieux de vie (la ville, la campagne, la montagne et le littoral), aux côtés de tous les acteurs des territoires, pour améliorer leur survie :",
+        "Busards : protéger leurs nids dans les plaines agricoles, en travaillant avec les agriculteurs et en favorisant des habitats comme les haies et les mares.",
+        "Gypaète barbu : poursuivre sa réintroduction et renforcer les actions pour relier les populations des Alpes, des Pyrénées et du Massif central.",
+        "Hirondelles de fenêtre : préserver l’espèce en limitant la destruction des nids, en lien avec les collectivités, les agriculteurs et les acteurs de la rénovation."
+      ]
+    },
+    {
+      "slug": "secourspopulaire",
+      "name": "Secours populaire français",
+      "link": "https://www.secourspopulaire.fr/",
+      "logo": "/assos/secourspopulaire.webp",
+      "since": 2024,
+      "collector": false,
+      "description": "Le Secours populaire français s’engage quotidiennement pour un monde plus juste et plus solidaire. Ses bénévoles, de tous âges et tous horizons, agissent près de chez eux pour faire vivre une solidarité sans frontière et inconditionnelle, fidèlement à la devise de l’association, « Tout ce qui est humain est nôtre ».",
+      "usage": [
+        "Avoir un emploi durable constitue le meilleur rempart contre la précarité car il est vecteur de revenus et de reconnaissance sociale.",
+        "Sans devenir expert de l’insertion professionnelle, nous pouvons mettre en place différentes actions pour favoriser l’accès à l’emploi ou à la formation :",
+        "identifier les problématiques des personnes et les accompagner,",
+        "les orienter vers des partenaires spécialisés"
+      ]
+    },
+    {
+      "slug": "cop1",
+      "name": "Cop1",
+      "link": "https://www.cop1.fr/",
+      "logo": "/assos/cop1.webp",
+      "since": 2024,
+      "collector": false,
+      "description": "Cop1 est une association indépendante motivée par un but simple : porter assistance à tout étudiant dans le besoin grâce à des distributions gratuites de denrées alimentaires, de produits d’hygiène, de vêtements, un accès aux droits, à la culture, au sport, à l’emploi et de nombreuses activités !",
+      "usage": [
+        "Aujourd’hui, les besoins des jeunes et des étudiants persistent, tout comme la volonté de Cop1 d’y répondre plus amplement. C’est une fois de plus avec le soutien du ZEVENT que nous pourrons y parvenir, en ouvrant dans 5 nouvelles villes étudiantes !"
+      ]
+    },
+    {
+      "slug": "aidants",
+      "name": "Association Française des Aidants",
+      "link": "https://www.aidants.fr/",
+      "logo": "/assos/aidants.webp",
+      "since": 2025,
+      "collector": false,
+      "description": "Depuis sa création en 2003, l’Association Française des aidants écoute et porte la parole des proches aidants de personnes malades, en situation de handicap et ce, quel que soit leur âge. Elle agit pour qu’ils soient pris en considération. agir pour qu’aider son proche devienne un choix librement consenti et accompagné par la société.",
+      "usage": [
+        "L’Association Française des aidants pourra :",
+        "mettre en place des nouveaux dispositifs de répit pour les jeunes aidants dans des régions n’ayant pas de dispositif dédié aux jeunes aidants ;",
+        "proposer des biographies hospitalières pour contribuer au rétablissement des proches aidants après le deuil de la personne accompagnée ;",
+        "créer des contenus numériques pour les professionnels de santé qui accompagnent les aidants sur le terrain au quotidien : des podcasts avec des professionnels pour témoigner de leurs démarches en faveur des aidants,"
+      ]
+    },
+    {
+      "slug": "ligue-cancer",
+      "name": "La Ligue contre le Cancer",
+      "link": "https://www.ligue-cancer.net/",
+      "logo": "/assos/ligue-cancer.webp",
+      "since": 2025,
+      "collector": false,
+      "description": "Depuis plus de 100 ans, la Ligue contre le cancer se bat pour faire reculer la maladie et ne laisser personne seul face à elle. Présente partout en France grâce à 103 comités départementaux, elle est aujourd’hui le 1er financeur non gouvernemental de la recherche en cancérologie en France.",
+      "usage": [
+        "Les dons serviront à financer un projet de recherche au service de la prévention et du dépistage des cancers des poumons, permettant d'aller-vers des zones reculées en étroite collaboration avec les forces territoriales (comités, hôpitaux et universités) grâce à un camion mobile.",
+        "CENTAURE est un dispositif mobile innovant, qui sera déployé dans plusieurs régions, et qui permettra d’aller directement à la rencontre des personnes sur les territoires.",
+        "Ce camion mobile servira à :",
+        "repérer les personnes éligibles au dépistage ;"
+      ]
+    },
+    {
+      "slug": "sparadrap",
+      "name": "Sparadrap",
+      "link": "https://www.sparadrap.org/",
+      "logo": "/assos/sparadrap.webp",
+      "since": 2025,
+      "collector": false,
+      "description": "L'association SPARADRAP a pour but de guider les enfants dans le contexte des soins médicaux et hospitaliers. L’association Sparadrap informe, accompagne et rassure les enfants et leurs proches grâce à ses nombreuses ressources pédagogiques sur la santé. Elle participe à une meilleure prise en charge des enfants, en sensibilisant et formant les professionnels de santé.",
+      "usage": [
+        "Avec les dons de l’édition 2026, SPARADRAP pourra notamment offrir à des adolescents son livret sur la santé mentale, proposer d’autres webinaires pour aider les parents d’enfants malades ainsi que des vidéos d’information (avec traduction), etc."
+      ]
+    },
+    {
+      "slug": "rire-medecin",
+      "name": "Le Rire Médecin",
+      "link": "https://www.leriremedecin.org/",
+      "logo": "/assos/rire-medecin.webp",
+      "since": 2025,
+      "collector": false,
+      "description": "Le Rire Médecin : redonner le sourire, même à l’hôpital et ce depuis 35 ans. En France, près de 2 millions d'enfants sont hospitalisés* chaque année. Pour ces enfants et leurs familles, la maladie est une épreuve difficile, marquée par l’attente, les soins, la douleur parfois, et souvent un profond sentiment d’isolement.",
+      "usage": [
+        "Grâce à cette nouvelle édition du ZEVENT en 2026, Le Rire Médecin ira encore plus loin en développant des interventions dans de nouveaux services et plus d’hôpitaux.",
+        "Grâce à vous, 13 500 enfants supplémentaires seront bénéficiaires de la présence des clowns à l’hôpital."
+      ]
+    },
+    {
+      "slug": "sourire",
+      "name": "Sourire à la Vie",
+      "link": "https://www.sourirealavie.fr/",
+      "logo": "/assos/sourire.webp",
+      "since": 2025,
+      "collector": false,
+      "description": "Les cancers pédiatriques sont la 1ère cause de mortalité médicale chez l’enfant et l’adolescent. 2 550 nouveaux cas sont diagnostiqués chaque année en France, soit un enfant toutes les 3,5h.",
+      "usage": []
+    },
+    {
+      "slug": "envol",
+      "name": "L'envol",
+      "link": "https://www.lenvol.asso.fr/",
+      "logo": "/assos/envol.webp",
+      "since": 2025,
+      "collector": false,
+      "description": "En France, 650 000 familles sont touchées par la maladie grave ou le handicap d’un enfant.L’association organise des séjours de vacances adaptés et médicalisés pour tous les enfants et jeunes adultes malades, quelle que soit leur maladie (cancers, drépanocytose, maladies rares…), y compris en cas de handicaps associés et de soins médicaux importants.",
+      "usage": [
+        "Pour réussir cette nouvelle étape de développement, le soutien des streamers et de leurs communautés représente un levier essentiel pour nous aider à changer d’échelle,"
+      ]
+    }
+  ]
+}

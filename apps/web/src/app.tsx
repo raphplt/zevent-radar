@@ -5,6 +5,7 @@ import { Layout } from "@/components/Layout";
 import { Spinner } from "@/components/ui";
 import { applyTheme, settingsStore } from "@/lib/settings";
 import { AboutPage } from "@/routes/About";
+import { AssociationsPage } from "@/routes/Associations";
 import { CommunityPage } from "@/routes/Community";
 import { ContributePage } from "@/routes/Contribute";
 import { ExplorePage } from "@/routes/Explore";
@@ -56,6 +57,7 @@ export function App() {
             <Route path="settings" element={<SettingsPage />} />
             <Route path="status" element={<StatusPage />} />
             <Route path="about" element={<AboutPage />} />
+            <Route path="associations" element={<AssociationsPage />} />
             <Route path="legal" element={<LegalPage />} />
             <Route
               path="admin"

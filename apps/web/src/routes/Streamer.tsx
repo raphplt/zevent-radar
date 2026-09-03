@@ -110,7 +110,7 @@ export function StreamerPage() {
       </div>
       <div className="mt-5 space-y-5 lg:mt-0">
       <Card className="p-4">
-        <SectionTitle action={<Badge>{goals.length} goals</Badge>}>Donation goals</SectionTitle>
+        <SectionTitle action={<span className="flex items-center gap-2"><a href="https://zevent.gdoc.fr/donation_goals" target="_blank" rel="noreferrer" className="text-xs text-muted underline">InGDoc</a><Badge>{goals.length} goals</Badge></span>}>Donation goals</SectionTitle>
         {goalsFile.isPending ? <Skeleton className="h-32" /> : <GoalList goals={goals} currentCents={streamer.amountCents} eventTotalCents={latest.data?.event.totalAmountCents ?? 0} nextGoalId={goal?.id} streamerId={streamer.id} />}
         {sources.length > 0 && (
           <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted">

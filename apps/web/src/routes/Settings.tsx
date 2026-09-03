@@ -131,7 +131,7 @@ export function SettingsPage() {
 
       </div>
       <p className="text-center text-xs text-muted lg:text-left">
-        <Link to="/status" className="underline">État des sources</Link> · <Link to="/about" className="underline">À propos</Link> · <Link to="/legal" className="underline">Mentions légales</Link>
+        <Link to="/associations" className="underline">Associations</Link> · <a href="https://zevent.gdoc.fr/" className="underline" target="_blank" rel="noreferrer">InGDoc</a> · <Link to="/status" className="underline">État du service</Link> · <Link to="/about" className="underline">À propos</Link> · <Link to="/legal" className="underline">Mentions légales</Link>
       </p>
     </div>
   );
