@@ -117,6 +117,16 @@ export interface StatusFile {
   goalsSyncedAt: string | null;
 }
 
+export interface PublicStatusFile {
+  generatedAt: string;
+  lastRunAt: string | null;
+  stale: boolean;
+  healthy: boolean;
+  degraded: boolean;
+  counts: StatusFile["counts"];
+  goalsSyncedAt: string | null;
+}
+
 export type HistoryPoint = [timestampMs: number, amountCents: number];
 
 export interface HistoryFile {

@@ -26,7 +26,7 @@ echo "== R2"
 pnpm exec wrangler r2 bucket list 2>/dev/null | grep -q '^name: *zevent-radar-data' || pnpm exec wrangler r2 bucket create zevent-radar-data
 pnpm exec wrangler r2 bucket lifecycle add zevent-radar-data --prefix snapshots/ --expire-days 7 --force >/dev/null 2>&1 || true
 cat > /tmp/zr-cors.json <<JSON
-[{"AllowedOrigins":["https://zgoals.xyz","https://www.zgoals.xyz","http://localhost:5173"],"AllowedMethods":["GET","HEAD"],"AllowedHeaders":["*"],"MaxAgeSeconds":3600}]
+{"rules":[{"allowed":{"origins":["https://zgoals.xyz","https://www.zgoals.xyz","https://zevent-radar.zgoals.workers.dev","http://localhost:5173"],"methods":["GET","HEAD"],"headers":["*"]},"maxAgeSeconds":3600}]}
 JSON
 pnpm exec wrangler r2 bucket cors set zevent-radar-data --file /tmp/zr-cors.json --force >/dev/null 2>&1 || true
 

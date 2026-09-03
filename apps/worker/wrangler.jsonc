@@ -17,7 +17,7 @@
     { "pattern": "www.zgoals.xyz", "custom_domain": true }
   ],
   "triggers": {
-    "crons": ["* * * * *", "*/15 * * * *"]
+    "crons": ["* * * * *", "*/5 * * * *"]
   },
   "vars": {
     "APP_URL": "https://zgoals.xyz",
@@ -26,7 +26,7 @@
     "INGDOC_API_BASE": "https://api.ppr.evenmorestats.fr",
     "INGDOC_EVENT_ID": "019f5bd1-fe07-7d78-a326-a02198a9d50f",
     "INGDOC_SYNC_ENABLED": "true",
-    "VAPID_SUBJECT": "mailto:contact@zgoals.xyz",
+    "VAPID_SUBJECT": "mailto:raphael.plassart@gmail.com",
     "ACCESS_TEAM_DOMAIN": "",
     "ACCESS_AUD": ""
   },

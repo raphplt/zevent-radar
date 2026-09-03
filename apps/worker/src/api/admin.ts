@@ -22,7 +22,7 @@ adminRoutes.use("/api/admin/*", async (c, next) => {
 });
 
 adminRoutes.get("/api/admin/status", async (c) => {
-  const status = await readJson<StatusFile>(c.env.DATA, KEYS.status);
+  const status = await readJson<StatusFile>(c.env.DATA, KEYS.internalStatus);
   const [pending, deliveries, subs, errors] = await Promise.all([
     c.env.DB.prepare("SELECT COUNT(*) AS n FROM community_reports WHERE status = 'pending'").first<{ n: number }>(),
     c.env.DB.prepare("SELECT status, COUNT(*) AS n FROM notification_deliveries GROUP BY status").all<{ status: string; n: number }>(),

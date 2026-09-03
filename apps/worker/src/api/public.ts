@@ -1,4 +1,4 @@
-import type { HistoryFile, StatusFile, StreamerHistoryResponse } from "@zevent-radar/contracts";
+import type { HistoryFile, PublicStatusFile, StreamerHistoryResponse } from "@zevent-radar/contracts";
 import { Hono } from "hono";
 import type { Env } from "../env";
 import { KEYS, readJson } from "../lib/r2";
@@ -71,8 +71,8 @@ publicRoutes.get("/data/history/:streamerId", async (c) => {
 });
 
 publicRoutes.get("/api/health", async (c) => {
-  const status = await readJson<StatusFile>(c.env.DATA, KEYS.status);
+  const status = await readJson<PublicStatusFile>(c.env.DATA, KEYS.status);
   if (!status) return c.json({ ok: false, reason: "no status yet" }, 503);
   const age = Date.now() - Date.parse(status.generatedAt);
-  return c.json({ ok: age < 5 * 60 * 1000 && !status.stale, ageSeconds: Math.round(age / 1000), stale: status.stale, sources: status.sources }, 200, { "cache-control": "no-store" });
+  return c.json({ ok: age < 5 * 60 * 1000 && !status.stale, ageSeconds: Math.round(age / 1000), stale: status.stale, degraded: status.degraded }, 200, { "cache-control": "no-store" });
 });

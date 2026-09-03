@@ -15,6 +15,8 @@ export interface CollectorState {
   lastAppAt: string | null;
   sources: Record<string, SourceHealth>;
   goalsSyncedAt: string | null;
+  ingdocCursor: string | null;
+  ingdocSignatures: Record<string, string>;
 }
 
 export function emptyState(): CollectorState {
@@ -31,7 +33,9 @@ export function emptyState(): CollectorState {
     lastApp: null,
     lastAppAt: null,
     sources: {},
-    goalsSyncedAt: null
+    goalsSyncedAt: null,
+    ingdocCursor: null,
+    ingdocSignatures: {}
   };
 }
 

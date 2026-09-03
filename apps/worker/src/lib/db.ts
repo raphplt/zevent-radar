@@ -54,7 +54,7 @@ export async function loadStreamers(db: D1Database): Promise<StreamerRow[]> {
   return results;
 }
 
-export async function runBatch(db: D1Database, statements: D1PreparedStatement[], chunk = 100): Promise<D1Result[]> {
+export async function runBatch(db: D1Database, statements: D1PreparedStatement[], chunk = 250): Promise<D1Result[]> {
   const results: D1Result[] = [];
   for (let i = 0; i < statements.length; i += chunk) {
     const part = statements.slice(i, i + chunk);

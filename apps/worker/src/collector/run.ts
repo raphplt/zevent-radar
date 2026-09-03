@@ -6,6 +6,7 @@ import type {
   NotificationJob,
   PublicEvent,
   PublicState,
+  PublicStatusFile,
   PublicStreamer,
   RadarEntry,
   StatusFile,
@@ -395,5 +396,18 @@ export async function writeStatus(env: Env, state: CollectorState, latest: Publi
     goalsVersion: goalsFile?.version ?? 0,
     goalsSyncedAt: state.goalsSyncedAt
   };
-  await writeJson(env.DATA, KEYS.status, status, "public, max-age=15, stale-while-revalidate=60");
+  const failing = status.sources.filter((s) => !s.ok);
+  const publicStatus: PublicStatusFile = {
+    generatedAt: status.generatedAt,
+    lastRunAt: status.lastRunAt,
+    stale,
+    healthy: !stale && failing.length === 0,
+    degraded: failing.length > 0,
+    counts: status.counts,
+    goalsSyncedAt: status.goalsSyncedAt
+  };
+  await Promise.all([
+    writeJson(env.DATA, KEYS.internalStatus, status),
+    writeJson(env.DATA, KEYS.status, publicStatus, "public, max-age=15, stale-while-revalidate=60")
+  ]);
 }

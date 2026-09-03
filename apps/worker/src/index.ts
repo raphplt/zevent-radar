@@ -9,7 +9,7 @@ export default {
   fetch: app.fetch,
 
   async scheduled(event: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
-    if (event.cron === "*/15 * * * *") {
+    if (event.cron === "*/5 * * * *") {
       if (env.INGDOC_SYNC_ENABLED === "true") {
         ctx.waitUntil(syncFromIngdoc(env).catch((error) => console.error("ingdoc sync failed", error)));
       }

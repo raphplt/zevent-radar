@@ -1,4 +1,4 @@
-import type { CommunityReport, GoalsFile, PublicState, StatusFile, StreamerHistoryResponse } from "@zevent-radar/contracts";
+import type { CommunityReport, GoalsFile, PublicState, PublicStatusFile, StreamerHistoryResponse } from "@zevent-radar/contracts";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { api, getData } from "@/lib/api";
@@ -29,7 +29,7 @@ export function useGoals() {
 export function useStatus() {
   return useQuery({
     queryKey: ["status"],
-    queryFn: ({ signal }) => getData<StatusFile>("/status.json", signal),
+    queryFn: ({ signal }) => getData<PublicStatusFile>("/status.json", signal),
     refetchInterval: 30_000
   });
 }

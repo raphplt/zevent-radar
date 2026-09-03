@@ -174,8 +174,14 @@ export async function importGoals(env: Env, input: unknown, options: ImportOptio
   }
 
   if (options.mode === "sync") {
+    const syncedStreamers = new Set<string>();
+    for (const entry of file.streamers) {
+      const login = entry.twitchLogin.toLowerCase();
+      const streamer = (entry.twitchId ? byTwitchId.get(entry.twitchId) : undefined) ?? byLogin.get(login);
+      if (streamer) syncedStreamers.add(streamer.id);
+    }
     for (const goal of existing) {
-      if (goal.sourceName === sourceName && !seenIds.has(goal.id) && goal.status !== "superseded" && goal.status !== "rejected") {
+      if (goal.sourceName === sourceName && syncedStreamers.has(goal.streamerId) && !seenIds.has(goal.id) && goal.status !== "superseded" && goal.status !== "rejected") {
         summary.superseded += 1;
         statements.push(env.DB.prepare("UPDATE goals SET status = 'superseded', updated_at = ? WHERE id = ?").bind(at, goal.id));
       }

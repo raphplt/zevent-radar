@@ -51,7 +51,7 @@ Cloudflare Registrar vend à prix coûtant, sans majoration : un `.com` ou `.net
 
 #### Option C : pas de domaine du tout
 
-Le Worker est joignable sur `zevent-radar.<ton-sous-domaine>.workers.dev`, en HTTPS, gratuitement. La PWA et les notifications fonctionnent. Tu perds seulement le domaine dédié aux données (étape 9), ce qui limite fortement le trafic supportable. Acceptable pour tester, pas pour l'événement.
+Le Worker est joignable sur `zevent-radar.zgoals.workers.dev`, en HTTPS, gratuitement. La PWA et les notifications fonctionnent. Tu perds seulement le domaine dédié aux données (étape 9), ce qui limite fortement le trafic supportable. Acceptable pour tester, pas pour l'événement.
 
 **Mon avis** : si ton domaine existant est déjà chez Cloudflare, sous-domaine sans hésiter. Sinon, un domaine neuf à 10 € évite de toucher aux DNS d'un domaine qui te sert déjà.
 
@@ -163,6 +163,10 @@ curl $API/data/status.json
 ```
 
 À partir de là, le cron prend le relais chaque minute. Rien d'autre à lancer.
+
+## 8 bis. Limite du plan gratuit : 50 sous-requêtes par exécution
+
+Un Worker gratuit ne peut faire que 50 appels sortants (fetch, D1, R2, Queue) par exécution. La synchronisation InGDoc est donc incrémentale : toutes les 5 minutes, elle rafraîchit 20 participations, en priorité celles dont l'aperçu a changé, et boucle sur l'ensemble en une heure environ. L'import initial complet se fait depuis ta machine avec `pnpm goals:import` puis `pnpm goals:seed`, ce qui ne compte pas dans cette limite. Workers Paid porte la limite à 1 000.
 
 ## 9. Capacité : servir les données depuis R2
 
