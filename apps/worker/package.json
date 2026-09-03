@@ -1,0 +1,28 @@
+{
+  "name": "@zevent-radar/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --test-scheduled",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "db:migrate": "wrangler d1 migrations apply zevent-radar --remote",
+    "db:migrate:local": "wrangler d1 migrations apply zevent-radar --local",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "@block65/webcrypto-web-push": "^2.0.0",
+    "@zevent-radar/contracts": "workspace:*",
+    "@zevent-radar/radar-engine": "workspace:*",
+    "hono": "^4.9.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250906.0",
+    "typescript": "~5.9.0",
+    "vitest": "^3.2.0",
+    "wrangler": "^4.35.0"
+  }
+}

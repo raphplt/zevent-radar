@@ -1,0 +1,63 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "zevent-radar",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "observability": { "enabled": true },
+  "assets": {
+    "directory": "../web/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*", "/data/*", "/__scheduled"]
+  },
+  "routes": [
+    { "pattern": "zgoals.xyz", "custom_domain": true },
+    { "pattern": "www.zgoals.xyz", "custom_domain": true }
+  ],
+  "triggers": {
+    "crons": ["* * * * *", "*/15 * * * *"]
+  },
+  "vars": {
+    "APP_URL": "https://zgoals.xyz",
+    "ZEVENT_APP_URL": "https://zevent.fr/api/app",
+    "ZEVENT_AMOUNT_URL": "https://api.zevent.fr/donation/current-amount",
+    "INGDOC_API_BASE": "https://api.ppr.evenmorestats.fr",
+    "INGDOC_EVENT_ID": "019f5bd1-fe07-7d78-a326-a02198a9d50f",
+    "INGDOC_SYNC_ENABLED": "true",
+    "VAPID_SUBJECT": "mailto:contact@zgoals.xyz",
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": ""
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "zevent-radar",
+      "database_id": "ddc43c80-4634-4aa8-ac4c-68f5c5905cd1",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "DATA",
+      "bucket_name": "zevent-radar-data"
+    }
+  ],
+  "queues": {
+    "producers": [{ "binding": "NOTIFICATIONS", "queue": "zevent-radar-notifications" }],
+    "consumers": [
+      {
+        "queue": "zevent-radar-notifications",
+        "max_batch_size": 20,
+        "max_batch_timeout": 5,
+        "max_retries": 2
+      }
+    ]
+  },
+  "unsafe": {
+    "bindings": [
+      { "name": "REPORT_LIMITER", "type": "ratelimit", "namespace_id": "1001", "simple": { "limit": 10, "period": 60 } }
+    ]
+  }
+}

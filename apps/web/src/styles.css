@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: #00bd00;
+  --color-accent-light: #66d766;
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-dim: var(--accent-dim);
+  --color-accent-border: var(--accent-border);
+  --color-gold: #e7b22b;
+  --color-gold-light: #ffe095;
+  --color-success: #33ca33;
+  --color-warning: #e7b22b;
+  --color-danger: #ef4444;
+  --font-sans: "Switzer", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-2: #f0f0f0;
+  --border: #e0e0e0;
+  --fg: #0e0e0e;
+  --muted: #515151;
+  --accent-strong: #007100;
+  --accent-dim: #e5f7e5;
+  --accent-border: #99d699;
+  --bevel-top: #ffffff;
+  --bevel-bottom: #cfcfcf;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #000000;
+  --surface: #111111;
+  --surface-2: #1d1d1d;
+  --border: #313131;
+  --fg: #fafafa;
+  --muted: #9c9c9c;
+  --accent-strong: #33ca33;
+  --accent-dim: #002500;
+  --accent-border: #004b00;
+  --bevel-top: #383838;
+  --bevel-bottom: #080808;
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+}
+
+.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+.safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.bevel-primary {
+  box-shadow:
+    inset 0 2px 0 #66d766,
+    inset 0 -2px 0 #007100;
+}
+
+.bevel-primary:hover {
+  background: #33ca33;
+}
+
+.bevel-neutral {
+  box-shadow:
+    inset 0 2px 0 var(--bevel-top),
+    inset 0 -2px 0 var(--bevel-bottom);
+}
+
+.bevel-gold {
+  background: linear-gradient(180deg, #ffe095 0%, #e7b22b 100%);
+  box-shadow:
+    inset 0 2px 0 #fff0cc,
+    inset 0 -2px 0 #a67c00;
+}
+
+.text-gold-gradient {
+  background: linear-gradient(180deg, #ffe095 0%, #e7b22b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #33ca33 0%, #00bd00 100%);
+}
+
+.progress-fill-gold {
+  background: linear-gradient(90deg, #ffe095 0%, #e7b22b 100%);
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: pulse-ring 1.6s ease-out infinite;
+}

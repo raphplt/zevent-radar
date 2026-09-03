@@ -1,0 +1,23 @@
+{
+  "name": "zevent-radar",
+  "private": true,
+  "packageManager": "pnpm@11.3.0",
+  "scripts": {
+    "dev": "pnpm --filter @zevent-radar/web dev",
+    "dev:worker": "pnpm --filter @zevent-radar/worker dev",
+    "build": "pnpm -r --filter './packages/*' build && pnpm --filter @zevent-radar/web build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "deploy": "pnpm build && pnpm --filter @zevent-radar/worker deploy",
+    "db:migrate": "pnpm --filter @zevent-radar/worker db:migrate",
+    "db:migrate:local": "pnpm --filter @zevent-radar/worker db:migrate:local",
+    "goals:import": "tsx scripts/import-goals.ts",
+    "goals:seed": "tsx scripts/seed-goals.ts",
+    "vapid:generate": "tsx scripts/generate-vapid.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "tsx": "^4.20.0",
+    "typescript": "~5.9.0"
+  }
+}
