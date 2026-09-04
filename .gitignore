@@ -11,3 +11,4 @@ dist
 .DS_Store
 coverage
 apps/web/dev-dist
+private/
