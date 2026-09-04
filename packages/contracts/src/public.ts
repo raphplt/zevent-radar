@@ -140,3 +140,15 @@ export interface StreamerHistoryResponse {
   updatedAt: string;
   points: HistoryPoint[];
 }
+
+/** Bulk history for several streamers, downsampled to keep the payload light. */
+export interface BulkHistoryResponse {
+  updatedAt: string;
+  series: Record<string, HistoryPoint[]>;
+}
+
+/** Paginated public event feed. `nextBefore` is the cursor for the following page, null at the end. */
+export interface EventsResponse {
+  events: PublicEvent[];
+  nextBefore: string | null;
+}

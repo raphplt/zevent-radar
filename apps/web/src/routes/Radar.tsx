@@ -84,7 +84,7 @@ export function RadarPage() {
 
         <div className="mt-6 space-y-6 lg:mt-0">
           <section>
-            <SectionTitle action={<Link to="/community" className="text-xs text-accent-strong">Communauté</Link>}>Fil</SectionTitle>
+            <SectionTitle action={<Link to="/feed" className="text-xs text-accent-strong">Tout le fil</Link>}>Fil</SectionTitle>
             <Feed events={state.recentEvents} reports={moments} limit={12} />
           </section>
           <section>

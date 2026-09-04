@@ -1,5 +1,5 @@
-import type { CommunityReport, GoalsFile, PublicState, PublicStatusFile, StreamerHistoryResponse } from "@zevent-radar/contracts";
-import { useQuery } from "@tanstack/react-query";
+import type { BulkHistoryResponse, CommunityReport, EventsResponse, GoalsFile, PublicEventKind, PublicState, PublicStatusFile, StreamerHistoryResponse } from "@zevent-radar/contracts";
+import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { api, getData } from "@/lib/api";
 import { LATEST_POLL_MS, LATEST_POLL_SAVER_MS, TOTAL_POLL_MS, TOTAL_POLL_SAVER_MS, ZEVENT_AMOUNT_URL, ZEVENT_STREAMER_URL } from "@/lib/config";
@@ -90,6 +90,38 @@ export function useHealth() {
   });
 }
 
+/** Downsampled history for several streamers in one request. Pass "event" to include the global total. */
+export function useBulkHistory(ids: string[]) {
+  const key = [...ids].sort().join(",");
+  return useQuery({
+    queryKey: ["history", "bulk", key],
+    queryFn: ({ signal }) => api<BulkHistoryResponse>(`/api/history?ids=${encodeURIComponent(key)}`, { signal }),
+    enabled: key.length > 0,
+    refetchInterval: 60_000,
+    staleTime: 30_000
+  });
+}
+
+const EVENTS_PAGE = 100;
+
+/** Paginated public event feed, newest first. */
+export function useEvents(kind: PublicEventKind | null, streamerId?: string) {
+  return useInfiniteQuery({
+    queryKey: ["events", kind ?? "all", streamerId ?? "all"],
+    queryFn: ({ pageParam, signal }) => {
+      const params = new URLSearchParams({ limit: String(EVENTS_PAGE) });
+      if (kind) params.set("kind", kind);
+      if (streamerId) params.set("streamerId", streamerId);
+      if (pageParam) params.set("before", pageParam);
+      return api<EventsResponse>(`/api/events?${params.toString()}`, { signal });
+    },
+    initialPageParam: "" as string,
+    getNextPageParam: (last) => last.nextBefore ?? undefined,
+    refetchInterval: 30_000,
+    staleTime: 15_000
+  });
+}
+
 export function useEventHistory() {
   return useQuery({
     queryKey: ["history", "event"],
@@ -98,24 +130,45 @@ export function useEventHistory() {
   });
 }
 
-export function useRealtimeAmount(login: string | null) {
-  const settings = settingsStore.use();
-  const query = useQuery({
+async function fetchRealtimeAmount(login: string, signal?: AbortSignal): Promise<number> {
+  const res = await fetch(`${ZEVENT_STREAMER_URL}${encodeURIComponent(login)}`, { signal, headers: { accept: "application/json" } });
+  if (!res.ok) throw new Error(`streamer ${res.status}`);
+  const data = (await res.json()) as { donationAmount?: { number?: number } };
+  const number = data.donationAmount?.number;
+  if (typeof number !== "number" || !Number.isFinite(number)) throw new Error("invalid amount");
+  return Math.max(0, Math.round(number * 100));
+}
+
+function realtimeQuery(login: string, dataSaver: boolean) {
+  return {
     queryKey: ["realtime", login],
-    queryFn: async ({ signal }) => {
-      const res = await fetch(`${ZEVENT_STREAMER_URL}${encodeURIComponent(login ?? "")}`, { signal, headers: { accept: "application/json" } });
-      if (!res.ok) throw new Error(`streamer ${res.status}`);
-      const data = (await res.json()) as { donationAmount?: { number?: number } };
-      const number = data.donationAmount?.number;
-      if (typeof number !== "number" || !Number.isFinite(number)) throw new Error("invalid amount");
-      return Math.max(0, Math.round(number * 100));
-    },
-    enabled: login !== null,
-    refetchInterval: settings.dataSaver ? TOTAL_POLL_SAVER_MS : TOTAL_POLL_MS,
+    queryFn: ({ signal }: { signal?: AbortSignal }) => fetchRealtimeAmount(login, signal),
+    refetchInterval: dataSaver ? TOTAL_POLL_SAVER_MS : TOTAL_POLL_MS,
     staleTime: 5_000,
     retry: 1
-  });
+  };
+}
+
+export function useRealtimeAmount(login: string | null) {
+  const settings = settingsStore.use();
+  const query = useQuery({ ...realtimeQuery(login ?? "", settings.dataSaver), enabled: login !== null });
   return { cents: query.data ?? null, live: query.isSuccess, updatedAt: query.dataUpdatedAt };
+}
+
+/** Realtime amounts for several streamers at once. Returns a map keyed by login; missing entries mean no data yet. */
+export function useRealtimeAmounts(logins: string[]): { amounts: Map<string, number>; live: boolean } {
+  const settings = settingsStore.use();
+  return useQueries({
+    queries: logins.map((login) => realtimeQuery(login, settings.dataSaver)),
+    combine: (results) => {
+      const amounts = new Map<string, number>();
+      results.forEach((result, index) => {
+        const login = logins[index];
+        if (login !== undefined && typeof result.data === "number") amounts.set(login, result.data);
+      });
+      return { amounts, live: results.some((r) => r.isSuccess) };
+    }
+  });
 }
 
 export function withRealtimeAmount(streamer: PublicState["streamers"][number], cents: number | null): PublicState["streamers"][number] {

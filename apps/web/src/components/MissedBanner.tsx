@@ -1,7 +1,7 @@
 import type { PublicEvent } from "@zevent-radar/contracts";
 import { History, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { favoritesStore } from "@/lib/favorites";
 import { euros } from "@/lib/format";
 import { lastSeenStore, markSeen, missedEvents } from "@/lib/lastSeen";
@@ -10,6 +10,7 @@ export function MissedBanner({ events }: { events: PublicEvent[] }) {
   const favorites = favoritesStore.use();
   const [since] = useState(() => lastSeenStore.get());
   const [dismissed, setDismissed] = useState(false);
+  const onFavorites = useLocation().pathname === "/favorites";
   useEffect(() => {
     markSeen();
     const timer = setInterval(markSeen, 60_000);
@@ -26,7 +27,7 @@ export function MissedBanner({ events }: { events: PublicEvent[] }) {
           {missed.slice(0, 3).map((e) => `${e.streamerDisplayName} ${e.amountCents !== null ? euros(e.amountCents) : ""}`).join(" · ")}
           {missed.length > 3 && ` · +${missed.length - 3}`}
         </p>
-        <Link to="/favorites" className="text-xs text-accent-strong underline">Voir mes favoris</Link>
+        {!onFavorites && <Link to="/favorites" className="text-xs text-accent-strong underline">Voir mes favoris</Link>}
       </div>
       <button type="button" onClick={() => setDismissed(true)} className="rounded-full p-1 text-muted hover:text-fg" aria-label="Fermer"><X size={14} /></button>
     </div>

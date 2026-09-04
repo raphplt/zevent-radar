@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Activity, BookOpen, Compass, ExternalLink, Github, HeartHandshake, Info, Linkedin, ListChecks, Radar, Radio, Scale, Settings, Star, Users, WifiOff } from "lucide-react";
+import { Activity, BookOpen, Coins, ExternalLink, Github, HeartHandshake, Info, Linkedin, ListChecks, Menu, Newspaper, Radar, Radio, Scale, Settings, Star, Users, WifiOff, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router";
 import { deltaOver } from "@zevent-radar/radar-engine";
@@ -8,16 +8,18 @@ import { useNow } from "@/hooks/useNow";
 import { count, euros, relativeTime } from "@/lib/format";
 import { Celebration, useMilestoneCelebration } from "./Celebration";
 import { Counter } from "./Counter";
+import { Toaster } from "./Toaster";
 
 const TABS = [
   { to: "/", label: "Radar", icon: Radar },
   { to: "/live", label: "En direct", icon: Radio },
   { to: "/favorites", label: "Favoris", icon: Star },
-  { to: "/streamers", label: "Explorer", icon: Compass },
+  { to: "/streamers", label: "Cagnottes", icon: Coins },
   { to: "/community", label: "Communauté", icon: Users }
 ];
 
 const SECONDARY = [
+  { to: "/feed", label: "Le fil", icon: Newspaper },
   { to: "/goals", label: "Tous les goals", icon: ListChecks },
   { to: "/associations", label: "Les associations", icon: HeartHandshake },
   { to: "/settings", label: "Réglages", icon: Settings },
@@ -35,6 +37,7 @@ export function Layout() {
   const location = useLocation();
   const celebration = useMilestoneCelebration(total.cents);
   const [offline, setOffline] = useState(() => typeof navigator !== "undefined" && !navigator.onLine);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const on = () => setOffline(false);
@@ -49,7 +52,21 @@ export function Layout() {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    setMenuOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   const stale = latest.data?.stale || (latest.data ? now - Date.parse(latest.data.generatedAt) > 3 * 60_000 : false);
   const freshness = offline ? (
@@ -66,6 +83,7 @@ export function Layout() {
   return (
     <div className="min-h-dvh lg:flex">
       {celebration.milestone !== null && <Celebration milestone={celebration.milestone} onDismiss={celebration.dismiss} />}
+      <Toaster />
       <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-dvh lg:w-64 lg:shrink-0 lg:flex-col lg:border-r lg:border-border lg:bg-surface dark:lg:bg-[#080808] xl:w-72">
         <NavLink to="/" className="flex items-center gap-3 px-5 py-5">
           <img src="/favicon.svg" alt="" width={36} height={36} className="rounded-xl" />
@@ -117,12 +135,46 @@ export function Layout() {
               <img src="/favicon.svg" alt="" width={28} height={28} className="rounded-lg" />
               <span className="text-sm font-bold tracking-tight">ZEvent Radar</span>
             </NavLink>
-            <div className="text-right">
-              <p className="text-gold-gradient text-lg leading-tight font-extrabold tabular-nums">{totalNode}</p>
-              <p className="flex items-center justify-end gap-1 text-[11px] text-muted">{delta !== null && delta > 0 && <span className="font-semibold text-accent-strong">+{euros(delta)}/5 min ·</span>}{freshness}</p>
+            <div className="flex items-center gap-2">
+              <div className="text-right">
+                <p className="text-gold-gradient text-lg leading-tight font-extrabold tabular-nums">{totalNode}</p>
+                <p className="flex items-center justify-end gap-1 text-[11px] text-muted">{delta !== null && delta > 0 && <span className="font-semibold text-accent-strong">+{euros(delta)}/5 min ·</span>}{freshness}</p>
+              </div>
+              <button type="button" onClick={() => setMenuOpen((v) => !v)} aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={menuOpen} aria-controls="mobile-menu" className="rounded-lg p-2 text-fg hover:bg-surface-2">
+                {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
             </div>
           </div>
         </header>
+        {menuOpen && (
+          <div id="mobile-menu" role="dialog" aria-label="Menu" className="fixed inset-x-0 top-[53px] bottom-0 z-20 overflow-y-auto bg-bg/95 px-4 py-4 backdrop-blur lg:hidden">
+            <ul className="space-y-1">
+              {TABS.map((tab) => (
+                <li key={tab.to}>
+                  <SideLink to={tab.to} label={tab.label} icon={tab.icon} end={tab.to === "/"} />
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 mb-1 px-3 text-[11px] font-semibold text-muted uppercase">Plus</p>
+            <ul className="space-y-1">
+              {SECONDARY.map((tab) => (
+                <li key={tab.to}>
+                  <SideLink to={tab.to} label={tab.label} icon={tab.icon} />
+                </li>
+              ))}
+              <li>
+                <a href="https://zevent.gdoc.fr/" target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted hover:bg-surface-2 hover:text-fg">
+                  <BookOpen size={18} />InGDoc<ExternalLink size={12} className="ml-auto" />
+                </a>
+              </li>
+            </ul>
+            <p className="mt-6 px-3 text-[11px] text-muted">Projet communautaire non officiel. Dons sur zevent.fr.</p>
+            <p className="flex items-center gap-3 px-3 pt-1 pb-24 text-[11px] text-muted">
+              <a href="https://github.com/raphplt/zevent-radar" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-fg"><Github size={12} />Code source</a>
+              <a href="https://www.linkedin.com/in/rapha%C3%ABl-plassart/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-fg"><Linkedin size={12} />raph</a>
+            </p>
+          </div>
+        )}
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-4 pb-24 lg:px-8 lg:pt-8 lg:pb-12">
           <Outlet />
         </main>

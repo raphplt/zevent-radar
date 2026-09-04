@@ -61,7 +61,7 @@ export function StreamerPage() {
       <div className="grid grid-cols-2 gap-2">
         <a href={`https://twitch.tv/${streamer.login}`} target="_blank" rel="noreferrer" className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-[#9146ff] px-3 text-sm font-bold text-white shadow-[inset_0_2px_0_#b48cff,inset_0_-2px_0_#5f2bb8]"><Tv size={16} />Regarder</a>
         <a href={streamer.donationUrl ?? "https://zevent.fr/don"} target="_blank" rel="noreferrer" className="bevel-gold inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-3 text-sm font-bold text-black"><Heart size={16} />Donner</a>
-        <Button variant={favorite ? "secondary" : "primary"} onClick={() => toggleFavorite(streamer.id)}><Star size={16} fill={favorite ? "currentColor" : "none"} />{favorite ? "Suivi" : "Suivre"}</Button>
+        <Button variant={favorite ? "secondary" : "primary"} onClick={() => toggleFavorite(streamer.id, streamer.displayName)}><Star size={16} fill={favorite ? "currentColor" : "none"} />{favorite ? "Suivi" : "Suivre"}</Button>
         <Link to={`/contribute?streamer=${streamer.id}`} className="bevel-neutral inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-surface-2 px-3 text-sm font-bold"><Flag size={16} />Signaler</Link>
       </div>
 

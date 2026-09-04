@@ -66,7 +66,7 @@ export function StreamerCard({ streamer, compact = false, highlight }: { streame
       </Link>
       <button
         type="button"
-        onClick={() => toggleFavorite(streamer.id)}
+        onClick={() => toggleFavorite(streamer.id, streamer.displayName)}
         aria-label={favorite ? "Retirer des favoris" : "Ajouter aux favoris"}
         aria-pressed={favorite}
         className={clsx("absolute top-2 right-2 rounded-full p-2 transition", favorite ? "text-gold" : "text-muted hover:text-fg")}
