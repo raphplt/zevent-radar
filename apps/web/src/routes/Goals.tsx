@@ -136,13 +136,15 @@ export function GoalsPage() {
             </button>
           ))}
         </div>
-        <Select value={sort} onChange={(e) => update("sort", e.target.value)} className="w-auto" aria-label="Trier">
+        <div className="w-full lg:ml-auto lg:w-56">
+        <Select value={sort} onChange={(e) => update("sort", e.target.value)} aria-label="Trier">
           <option value="near">Les plus proches</option>
           <option value="amount_asc">Montant croissant</option>
           <option value="amount_desc">Montant décroissant</option>
           <option value="recent">Derniers atteints</option>
           <option value="streamer">Par streamer</option>
         </Select>
+        </div>
       </div>
       {status === "upcoming" && (
         <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 lg:flex-wrap lg:overflow-visible">
