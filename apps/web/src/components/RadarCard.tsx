@@ -58,8 +58,8 @@ export function RadarCard({ entry, streamer }: { entry: RadarEntry; streamer: Pu
           <p className="truncate text-xs text-muted">{entry.goal.label}</p>
         </div>
         <div className="shrink-0 text-right">
-          <p className="text-sm font-bold tabular-nums">{euros(entry.goal.amountCents)}</p>
-          <p className="text-xs text-muted">reste {euros(entry.remainingCents)}</p>
+          <p className="text-sm tabular-nums"><span className="font-bold">{euros(streamer.amountCents)}</span><span className="text-muted"> / {euros(entry.goal.amountCents)}</span></p>
+          <p className="text-xs font-semibold text-gold-light">reste {euros(entry.remainingCents)}</p>
         </div>
       </div>
       <ProgressBar value={entry.progress} tone={entry.category === "imminent" ? "gold" : "accent"} tick={0.9} className="mt-2" size="sm" />

@@ -36,13 +36,13 @@ export function StreamerCard({ streamer, compact = false, highlight }: { streame
             ) : (
               <span>Hors ligne</span>
             )}
-            <span className="font-bold text-fg tabular-nums">{euros(streamer.amountCents)}</span>
+            {(!goal || compact || dim) && <span className="font-bold text-fg tabular-nums">{euros(streamer.amountCents)}</span>}
           </p>
           {goal && !compact && !dim && (
             <div className="mt-2">
               <div className="flex items-baseline justify-between gap-2 text-xs">
                 <span className="truncate text-muted">{goal.label}</span>
-                <span className="shrink-0 font-semibold tabular-nums">{euros(goal.amountCents)}</span>
+                <span className="shrink-0 tabular-nums"><span className="font-semibold">{euros(streamer.amountCents)}</span><span className="text-muted"> / {euros(goal.amountCents)}</span></span>
               </div>
               <ProgressBar value={streamer.progress ?? 0} className="mt-1" tick={0.9} tone={streamer.etaSeconds !== null && streamer.etaSeconds <= 300 ? "gold" : "accent"} />
               <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
