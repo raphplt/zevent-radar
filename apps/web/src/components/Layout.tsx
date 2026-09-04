@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Activity, BookOpen, Compass, ExternalLink, Github, HeartHandshake, Info, Linkedin, Radar, Radio, Scale, Settings, Star, Users, WifiOff } from "lucide-react";
+import { Activity, BookOpen, Compass, ExternalLink, Github, HeartHandshake, Info, Linkedin, ListChecks, Radar, Radio, Scale, Settings, Star, Users, WifiOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router";
 import { deltaOver } from "@zevent-radar/radar-engine";
@@ -17,6 +17,7 @@ const TABS = [
 ];
 
 const SECONDARY = [
+  { to: "/goals", label: "Tous les goals", icon: ListChecks },
   { to: "/associations", label: "Les associations", icon: HeartHandshake },
   { to: "/settings", label: "Réglages", icon: Settings },
   { to: "/status", label: "État du service", icon: Activity },

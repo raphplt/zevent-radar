@@ -79,3 +79,15 @@ export function Spinner({ className }: { className?: string }) {
 export function Skeleton({ className }: { className?: string }) {
   return <div className={clsx("animate-pulse rounded-xl bg-surface-2", className)} />;
 }
+
+export function Chips<T extends string>({ value, onChange, options }: { value: T; onChange: (v: T) => void; options: Array<[T, string]> }) {
+  return (
+    <div className="flex shrink-0 rounded-full border border-border p-0.5">
+      {options.map(([key, label]) => (
+        <button key={key} type="button" onClick={() => onChange(key)} className={clsx("rounded-full px-3 py-1 text-xs font-medium", value === key ? "bg-accent text-slate-950" : "text-muted")}>
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}

@@ -1,11 +1,11 @@
 import type { PublicStreamer } from "@zevent-radar/contracts";
 import clsx from "clsx";
-import { Search } from "lucide-react";
+import { ListChecks, Search } from "lucide-react";
 import { useDeferredValue, useMemo } from "react";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { filterStreamers } from "@/components/SearchBox";
 import { StreamerCard } from "@/components/StreamerCard";
-import { EmptyState, Input, Skeleton } from "@/components/ui";
+import { Chips, EmptyState, Input, Skeleton } from "@/components/ui";
 import { useLatest } from "@/hooks/useData";
 
 type LiveFilter = "all" | "live" | "offline";
@@ -78,7 +78,10 @@ export function ExplorePage() {
         <EmptyState title="Aucun résultat" description="Essaie un autre nom ou retire des filtres." />
       ) : (
         <>
-          <p className="text-xs text-muted">{results.length} streamers</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-muted">{results.length} streamers</p>
+            <Link to="/goals" className="inline-flex items-center gap-1 text-xs font-semibold text-accent-strong"><ListChecks size={14} />Tous les goals</Link>
+          </div>
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3">
             {results.slice(0, 150).map((s) => (
               <StreamerCard key={s.id} streamer={s} />
@@ -90,14 +93,3 @@ export function ExplorePage() {
   );
 }
 
-function Chips<T extends string>({ value, onChange, options }: { value: T; onChange: (v: T) => void; options: Array<[T, string]> }) {
-  return (
-    <div className="flex shrink-0 rounded-full border border-border p-0.5">
-      {options.map(([key, label]) => (
-        <button key={key} type="button" onClick={() => onChange(key)} className={clsx("rounded-full px-3 py-1 text-xs font-medium", value === key ? "bg-accent text-slate-950" : "text-muted")}>
-          {label}
-        </button>
-      ))}
-    </div>
-  );
-}

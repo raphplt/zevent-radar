@@ -10,6 +10,7 @@ import { CommunityPage } from "@/routes/Community";
 import { ContributePage } from "@/routes/Contribute";
 import { ExplorePage } from "@/routes/Explore";
 import { FavoritesPage } from "@/routes/Favorites";
+import { GoalsPage } from "@/routes/Goals";
 import { LegalPage } from "@/routes/Legal";
 import { LivePage } from "@/routes/Live";
 import { RadarPage } from "@/routes/Radar";
@@ -50,6 +51,7 @@ export function App() {
             <Route path="live" element={<LivePage />} />
             <Route path="favorites" element={<FavoritesPage />} />
             <Route path="streamers" element={<ExplorePage />} />
+            <Route path="goals" element={<GoalsPage />} />
             <Route path="streamers/:login" element={<StreamerPage />} />
             <Route path="streamers/:login/watch" element={<WatchPage />} />
             <Route path="community" element={<CommunityPage />} />
