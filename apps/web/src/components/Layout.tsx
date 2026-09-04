@@ -6,6 +6,7 @@ import { deltaOver } from "@zevent-radar/radar-engine";
 import { useEventHistory, useEventTotal, useLatest } from "@/hooks/useData";
 import { useNow } from "@/hooks/useNow";
 import { count, euros, relativeTime } from "@/lib/format";
+import { Celebration, useMilestoneCelebration } from "./Celebration";
 import { Counter } from "./Counter";
 
 const TABS = [
@@ -32,6 +33,7 @@ export function Layout() {
   const delta = eventHistory.data ? deltaOver(eventHistory.data.points, Date.parse(eventHistory.data.updatedAt), 5 * 60_000) : null;
   const now = useNow(5_000);
   const location = useLocation();
+  const celebration = useMilestoneCelebration(total.cents);
   const [offline, setOffline] = useState(() => typeof navigator !== "undefined" && !navigator.onLine);
 
   useEffect(() => {
@@ -63,6 +65,7 @@ export function Layout() {
 
   return (
     <div className="min-h-dvh lg:flex">
+      {celebration.milestone !== null && <Celebration milestone={celebration.milestone} onDismiss={celebration.dismiss} />}
       <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-dvh lg:w-64 lg:shrink-0 lg:flex-col lg:border-r lg:border-border lg:bg-surface dark:lg:bg-[#080808] xl:w-72">
         <NavLink to="/" className="flex items-center gap-3 px-5 py-5">
           <img src="/favicon.svg" alt="" width={36} height={36} className="rounded-xl" />
