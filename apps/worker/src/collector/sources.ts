@@ -1,10 +1,13 @@
-import { zeventAppSchema, zeventCurrentAmountSchema, type ZeventApp } from "@zevent-radar/contracts";
+import { zeventAppSchema, zeventCurrentAmountSchema, zeventStreamerSchema, type ZeventApp } from "@zevent-radar/contracts";
 import type { Env } from "../env";
 import { fetchWithRetry } from "../lib/http";
 import { markFailure, markSuccess, sourceHealth, type CollectorState } from "./state";
 
 export const SOURCE_APP = "zevent.fr/api/app";
 export const SOURCE_AMOUNT = "api.zevent.fr/current-amount";
+export const SOURCE_STREAMER = "api.zevent.fr/streamer";
+const REALTIME_CONCURRENCY = 12;
+export const REALTIME_LIMIT = 150;
 const BREAKER_THRESHOLD = 5;
 const BREAKER_COOLDOWN_MS = 2 * 60 * 1000;
 
@@ -67,4 +70,35 @@ export async function fetchEventTotal(env: Env, state: CollectorState, nowIso: s
     markFailure(state, SOURCE_AMOUNT, error, nowIso);
     return null;
   }
+}
+
+export async function fetchRealtimeAmounts(env: Env, state: CollectorState, keys: string[], nowIso: string): Promise<Record<string, number>> {
+  const nowMs = Date.parse(nowIso);
+  const result: Record<string, number> = {};
+  if (keys.length === 0 || breakerOpen(state, SOURCE_STREAMER, nowMs)) return result;
+  const started = Date.now();
+  const queue = [...keys];
+  let failures = 0;
+  let lastError: unknown = null;
+  async function worker(): Promise<void> {
+    while (queue.length > 0) {
+      const key = queue.shift()!;
+      try {
+        const res = await fetchWithRetry(`${env.ZEVENT_STREAMER_URL}${encodeURIComponent(key)}`, { timeoutMs: 3000, retries: 1 });
+        if (!res.ok) throw new Error(`status ${res.status}`);
+        const parsed = zeventStreamerSchema.safeParse(await res.json());
+        if (!parsed.success || !Number.isFinite(parsed.data.donationAmount.number)) throw new Error("invalid streamer payload");
+        result[key] = Math.max(0, Math.round(parsed.data.donationAmount.number * 100));
+      } catch (error) {
+        failures += 1;
+        lastError = error;
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(REALTIME_CONCURRENCY, keys.length) }, () => worker()));
+  const fetched = Object.keys(result).length;
+  console.log(JSON.stringify({ realtime: { keys: keys.length, fetched, failures, elapsedMs: Date.now() - started } }));
+  if (fetched > 0) markSuccess(state, SOURCE_STREAMER, Math.round((Date.now() - started) / Math.max(1, fetched + failures)), nowIso);
+  else markFailure(state, SOURCE_STREAMER, lastError ?? new Error("no realtime data"), nowIso);
+  return result;
 }

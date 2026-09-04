@@ -23,6 +23,7 @@
     "APP_URL": "https://zgoals.xyz",
     "ZEVENT_APP_URL": "https://zevent.fr/api/app",
     "ZEVENT_AMOUNT_URL": "https://api.zevent.fr/donation/current-amount",
+    "ZEVENT_STREAMER_URL": "https://api.zevent.fr/streamer/",
     "INGDOC_API_BASE": "https://api.ppr.evenmorestats.fr",
     "INGDOC_EVENT_ID": "019f5bd1-fe07-7d78-a326-a02198a9d50f",
     "INGDOC_SYNC_ENABLED": "true",

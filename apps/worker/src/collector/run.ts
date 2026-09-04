@@ -19,7 +19,7 @@ import { runBatch } from "../lib/db";
 import { nowIso as isoNow, uuid } from "../lib/ids";
 import { KEYS, readJson, writeJson } from "../lib/r2";
 import { formatEuros } from "../lib/format";
-import { fetchApp, fetchEventTotal } from "./sources";
+import { fetchApp, fetchEventTotal, fetchRealtimeAmounts, REALTIME_LIMIT } from "./sources";
 import { loadState, saveState, type CollectorState } from "./state";
 
 const STALE_AFTER_MS = 3 * 60 * 1000;
@@ -28,7 +28,7 @@ const DROP_MIN_CENTS = 5_000;
 const GLOBAL_DROP_RATIO = 0.1;
 const RECENT_EVENTS_LIMIT = 40;
 const SNAPSHOT_CACHE = "public, max-age=31536000, immutable";
-const LATEST_CACHE = "public, max-age=15, stale-while-revalidate=120";
+const LATEST_CACHE = "public, max-age=5";
 
 interface EventInsert {
   key: string;
@@ -74,6 +74,22 @@ function toLocation(value: string | null | undefined): StreamerLocation {
     default:
       return "unknown";
   }
+}
+
+function realtimeKeys(live: ZeventLiveEntry[], goalsByStreamer: Map<string, GoalRecord[]>): string[] {
+  const seen = new Set<string>();
+  const scored: Array<{ key: string; priority: number }> = [];
+  for (const entry of live) {
+    if (!entry.online) continue;
+    const id = streamerKey(entry);
+    if (seen.has(id)) continue;
+    seen.add(id);
+    const cents = Math.round((Number.isFinite(entry.donationAmount.number) ? entry.donationAmount.number : 0) * 100);
+    const pending = (goalsByStreamer.get(id) ?? []).filter((g) => g.category === "donation" && (g.status === "pending" || g.status === "verified") && g.amountCents > cents);
+    const nearest = pending.length > 0 ? Math.min(...pending.map((g) => g.amountCents - cents)) : Number.POSITIVE_INFINITY;
+    scored.push({ key: id, priority: nearest });
+  }
+  return scored.sort((a, b) => a.priority - b.priority).slice(0, REALTIME_LIMIT).map((s) => s.key);
 }
 
 function acceptAmount(state: CollectorState, id: string, cents: number, nowIso: string): number {
@@ -147,9 +163,6 @@ export async function runCollector(env: Env, options: { trigger: string } = { tr
     await Promise.all([saveState(env.DATA, state), writeStatus(env, state, null, goalsFile, [], nowIso, true)]);
     return { ok: false, stale: true, streamers: 0, events: 0, durationMs: Date.now() - started };
   }
-  const sourceUpdatedAt = appResult.fetchedAt ?? nowIso;
-  const stale = started - Date.parse(sourceUpdatedAt) > STALE_AFTER_MS;
-  const dataAgeSec = Math.max(0, Math.round((started - Date.parse(sourceUpdatedAt)) / 1000));
   const series: Record<string, HistoryPoint[]> = history?.series ?? {};
   const eventSeries: HistoryPoint[] = history?.eventTotal ?? [];
   const goals: GoalRecord[] = goalsFile?.goals ?? [];
@@ -159,6 +172,10 @@ export async function runCollector(env: Env, options: { trigger: string } = { tr
     list.push(goal);
     goalsByStreamer.set(goal.streamerId, list);
   }
+  const realtime = await fetchRealtimeAmounts(env, state, realtimeKeys(app.live, goalsByStreamer), nowIso);
+  const sourceUpdatedAt = Object.keys(realtime).length > 0 ? nowIso : (appResult.fetchedAt ?? nowIso);
+  const stale = started - Date.parse(sourceUpdatedAt) > STALE_AFTER_MS;
+  const dataAgeSec = Math.max(0, Math.round((started - Date.parse(sourceUpdatedAt)) / 1000));
   const previousTotal = state.previousEventTotal;
   const totalCents = acceptEventTotal(state, eventTotalCents, app.donationAmount ? Math.round(app.donationAmount.number * 100) : null);
   const nextEventSeries = appendPoint(eventSeries, [started, totalCents]);
@@ -177,8 +194,10 @@ export async function runCollector(env: Env, options: { trigger: string } = { tr
     if (seenIds.has(id)) continue;
     seenIds.add(id);
     const login = entry.twitch.toLowerCase();
-    const rawCents = Math.max(0, Math.round((Number.isFinite(entry.donationAmount.number) ? entry.donationAmount.number : 0) * 100));
-    const amountCents = appResult.fromCache ? (state.previousAmounts[id] ?? rawCents) : acceptAmount(state, id, rawCents, nowIso);
+    const appCents = Math.max(0, Math.round((Number.isFinite(entry.donationAmount.number) ? entry.donationAmount.number : 0) * 100));
+    const liveCents = realtime[id];
+    const rawCents = liveCents !== undefined ? Math.max(liveCents, appCents) : appCents;
+    const amountCents = appResult.fromCache && liveCents === undefined ? (state.previousAmounts[id] ?? rawCents) : acceptAmount(state, id, rawCents, nowIso);
     const previousCents = state.previousAmounts[id] ?? amountCents;
     nextAmounts[id] = amountCents;
     nextOnline[id] = entry.online;
@@ -408,6 +427,6 @@ export async function writeStatus(env: Env, state: CollectorState, latest: Publi
   };
   await Promise.all([
     writeJson(env.DATA, KEYS.internalStatus, status),
-    writeJson(env.DATA, KEYS.status, publicStatus, "public, max-age=15, stale-while-revalidate=60")
+    writeJson(env.DATA, KEYS.status, publicStatus, "public, max-age=5")
   ]);
 }

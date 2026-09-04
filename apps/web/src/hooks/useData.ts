@@ -2,7 +2,7 @@ import type { CommunityReport, GoalsFile, PublicState, PublicStatusFile, Streame
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { api, getData } from "@/lib/api";
-import { LATEST_POLL_MS, LATEST_POLL_SAVER_MS, TOTAL_POLL_MS, TOTAL_POLL_SAVER_MS, ZEVENT_AMOUNT_URL } from "@/lib/config";
+import { LATEST_POLL_MS, LATEST_POLL_SAVER_MS, TOTAL_POLL_MS, TOTAL_POLL_SAVER_MS, ZEVENT_AMOUNT_URL, ZEVENT_STREAMER_URL } from "@/lib/config";
 import { getInstallationId } from "@/lib/installation";
 import { settingsStore } from "@/lib/settings";
 
@@ -12,7 +12,7 @@ export function useLatest() {
     queryKey: ["latest"],
     queryFn: ({ signal }) => getData<PublicState>("/latest.json", signal),
     refetchInterval: settings.dataSaver ? LATEST_POLL_SAVER_MS : LATEST_POLL_MS,
-    staleTime: 10_000,
+    staleTime: 5_000,
     retry: 2
   });
 }
@@ -96,4 +96,34 @@ export function useEventHistory() {
     queryFn: ({ signal }) => getData<StreamerHistoryResponse>("/history/event", signal),
     refetchInterval: 60_000
   });
+}
+
+export function useRealtimeAmount(login: string | null) {
+  const settings = settingsStore.use();
+  const query = useQuery({
+    queryKey: ["realtime", login],
+    queryFn: async ({ signal }) => {
+      const res = await fetch(`${ZEVENT_STREAMER_URL}${encodeURIComponent(login ?? "")}`, { signal, headers: { accept: "application/json" } });
+      if (!res.ok) throw new Error(`streamer ${res.status}`);
+      const data = (await res.json()) as { donationAmount?: { number?: number } };
+      const number = data.donationAmount?.number;
+      if (typeof number !== "number" || !Number.isFinite(number)) throw new Error("invalid amount");
+      return Math.max(0, Math.round(number * 100));
+    },
+    enabled: login !== null,
+    refetchInterval: settings.dataSaver ? TOTAL_POLL_SAVER_MS : TOTAL_POLL_MS,
+    staleTime: 5_000,
+    retry: 1
+  });
+  return { cents: query.data ?? null, live: query.isSuccess, updatedAt: query.dataUpdatedAt };
+}
+
+export function withRealtimeAmount(streamer: PublicState["streamers"][number], cents: number | null): PublicState["streamers"][number] {
+  if (cents === null || cents <= streamer.amountCents) return streamer;
+  const goal = streamer.nextGoal;
+  if (!goal) return { ...streamer, amountCents: cents };
+  const remainingCents = Math.max(0, goal.amountCents - cents);
+  const progress = goal.amountCents > 0 ? Math.min(1, cents / goal.amountCents) : streamer.progress;
+  const etaSeconds = remainingCents === 0 ? 0 : streamer.velocityCentsPerMinute && streamer.etaSeconds !== null ? Math.round((remainingCents / streamer.velocityCentsPerMinute) * 60) : streamer.etaSeconds;
+  return { ...streamer, amountCents: cents, remainingCents, progress, etaSeconds };
 }

@@ -13,6 +13,7 @@ export interface Env {
   APP_URL: string;
   ZEVENT_APP_URL: string;
   ZEVENT_AMOUNT_URL: string;
+  ZEVENT_STREAMER_URL: string;
   INGDOC_API_BASE: string;
   INGDOC_EVENT_ID: string;
   INGDOC_SYNC_ENABLED: string;

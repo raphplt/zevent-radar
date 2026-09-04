@@ -7,7 +7,7 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { Sparkline } from "@/components/Sparkline";
 import { ConfidenceBadge } from "@/components/StreamerCard";
 import { Badge, Button, Card, EmptyState, SectionTitle, Skeleton } from "@/components/ui";
-import { useCommunity, useGoals, useLatest, useStreamerHistory, useStreamerMap } from "@/hooks/useData";
+import { useCommunity, useGoals, useLatest, useRealtimeAmount, useStreamerHistory, useStreamerMap, withRealtimeAmount } from "@/hooks/useData";
 import { useNow } from "@/hooks/useNow";
 import { favoritesStore, toggleFavorite } from "@/lib/favorites";
 import { compactNumber, duration, euros, percent, relativeTime } from "@/lib/format";
@@ -18,7 +18,9 @@ export function StreamerPage() {
   const latest = useLatest();
   const goalsFile = useGoals();
   const { byLogin } = useStreamerMap(latest.data);
-  const streamer = byLogin.get(login.toLowerCase()) ?? null;
+  const base = byLogin.get(login.toLowerCase()) ?? null;
+  const realtime = useRealtimeAmount(base?.login ?? null);
+  const streamer = base ? withRealtimeAmount(base, realtime.cents) : null;
   const history = useStreamerHistory(streamer?.id ?? null);
   const community = useCommunity(streamer?.id);
   const favorites = favoritesStore.use();
@@ -104,7 +106,7 @@ export function StreamerPage() {
       <Card className="p-4">
         <SectionTitle action={<span className="text-xs text-muted">{spanHours ? `${spanHours} dernière${spanHours > 1 ? "s" : ""} heure${spanHours > 1 ? "s" : ""}` : "historique"}</span>}>Progression</SectionTitle>
         {history.isPending ? <Skeleton className="h-28" /> : <Sparkline points={history.data?.points ?? []} goalCents={goal?.amountCents ?? null} className="h-32 w-full" />}
-        <p className="mt-1 text-xs text-muted">Mis à jour {relativeTime(streamer.updatedAt, now)}</p>
+        <p className="mt-1 text-xs text-muted">{realtime.live ? "Cagnotte en temps réel · tendance mise à jour " : "Mis à jour "}{relativeTime(streamer.updatedAt, now)}</p>
       </Card>
 
       </div>

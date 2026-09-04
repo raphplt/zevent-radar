@@ -7,7 +7,7 @@ import { Countdown } from "@/components/Countdown";
 import { ProgressBar } from "@/components/ProgressBar";
 import { ConfidenceBadge } from "@/components/StreamerCard";
 import { EmptyState, Skeleton } from "@/components/ui";
-import { useLatest, useStreamerHistory, useStreamerMap } from "@/hooks/useData";
+import { useLatest, useRealtimeAmount, useStreamerHistory, useStreamerMap, withRealtimeAmount } from "@/hooks/useData";
 import { useNow } from "@/hooks/useNow";
 import { euros, percent, relativeTime } from "@/lib/format";
 
@@ -15,7 +15,9 @@ export function WatchPage() {
   const { login = "" } = useParams();
   const latest = useLatest();
   const { byLogin } = useStreamerMap(latest.data);
-  const streamer = byLogin.get(login.toLowerCase()) ?? null;
+  const base = byLogin.get(login.toLowerCase()) ?? null;
+  const realtime = useRealtimeAmount(base?.login ?? null);
+  const streamer = base ? withRealtimeAmount(base, realtime.cents) : null;
   const history = useStreamerHistory(streamer?.id ?? null);
   const now = useNow(5_000);
 
@@ -29,7 +31,7 @@ export function WatchPage() {
     <div className="mx-auto flex min-h-[70dvh] max-w-xl flex-col gap-6">
       <div className="flex items-center justify-between">
         <Link to={`/streamers/${streamer.login}`} className="inline-flex items-center gap-1 text-xs text-muted"><ArrowLeft size={14} />Fiche</Link>
-        <span className="text-xs text-muted">maj {relativeTime(latest.data.generatedAt, now)}</span>
+        <span className="text-xs text-muted">{realtime.live ? <span className="inline-flex items-center gap-1"><span className="live-dot relative inline-block h-2 w-2 rounded-full bg-accent text-accent" />temps réel</span> : `maj ${relativeTime(latest.data.generatedAt, now)}`}</span>
       </div>
       <div className="flex items-center gap-4">
         <Avatar src={streamer.avatarUrl} name={streamer.displayName} size={64} online={streamer.online} />

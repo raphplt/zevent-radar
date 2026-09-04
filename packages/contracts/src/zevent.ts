@@ -33,6 +33,23 @@ export const zeventCurrentAmountSchema = z.object({
   total: z.number()
 });
 
+export const zeventStreamerSchema = z.object({
+  streamer: z
+    .object({
+      twitchId: z.string().nullable().optional(),
+      twitchLogin: z.string().nullable().optional()
+    })
+    .optional(),
+  donationAmount: amountSchema,
+  globalDonationAmount: amountSchema.optional(),
+  donationGoal: z
+    .object({
+      goals: z.array(z.object({ amountRequired: amountSchema, title: z.string().optional() }))
+    })
+    .optional()
+});
+
 export type ZeventLiveEntry = z.infer<typeof zeventLiveEntrySchema>;
 export type ZeventApp = z.infer<typeof zeventAppSchema>;
 export type ZeventCurrentAmount = z.infer<typeof zeventCurrentAmountSchema>;
+export type ZeventStreamer = z.infer<typeof zeventStreamerSchema>;

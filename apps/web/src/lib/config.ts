@@ -1,8 +1,9 @@
 export const DATA_BASE_URL = (import.meta.env.VITE_DATA_BASE_URL as string | undefined)?.replace(/\/$/, "") ?? "/data";
 export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, "") ?? "";
 export const ZEVENT_AMOUNT_URL = "https://api.zevent.fr/donation/current-amount";
+export const ZEVENT_STREAMER_URL = "https://api.zevent.fr/streamer/";
 export const TURNSTILE_SITE_KEY = (import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined) ?? "";
-export const LATEST_POLL_MS = 20_000;
+export const LATEST_POLL_MS = 10_000;
 export const TOTAL_POLL_MS = 10_000;
 export const LATEST_POLL_SAVER_MS = 60_000;
 export const TOTAL_POLL_SAVER_MS = 30_000;
