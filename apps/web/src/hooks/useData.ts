@@ -37,7 +37,7 @@ export function useStatus() {
 export function useStreamerHistory(streamerId: string | null) {
   return useQuery({
     queryKey: ["history", streamerId],
-    queryFn: ({ signal }) => getData<StreamerHistoryResponse>(`/history/${streamerId}`, signal),
+    queryFn: ({ signal }) => api<StreamerHistoryResponse>(`/data/history/${streamerId}`, { signal }),
     enabled: streamerId !== null,
     refetchInterval: 60_000
   });
@@ -77,7 +77,7 @@ export function useCommunity(streamerId?: string) {
   return useQuery({
     queryKey: ["community", streamerId ?? "all"],
     queryFn: () => api<{ reports: CommunityReport[]; confirmed: string[]; visibleThreshold: number }>(`/api/community?installationId=${getInstallationId()}${streamerId ? `&streamerId=${streamerId}` : ""}`),
-    refetchInterval: 45_000
+    refetchInterval: 60_000
   });
 }
 
@@ -93,7 +93,7 @@ export function useHealth() {
 export function useEventHistory() {
   return useQuery({
     queryKey: ["history", "event"],
-    queryFn: ({ signal }) => getData<StreamerHistoryResponse>("/history/event", signal),
+    queryFn: ({ signal }) => api<StreamerHistoryResponse>("/data/history/event", { signal }),
     refetchInterval: 60_000
   });
 }
