@@ -1,5 +1,6 @@
 import { adminGoalCreateSchema, adminGoalUpdateSchema, adminReportDecisionSchema, type StatusFile } from "@zevent-radar/contracts";
 import { Hono } from "hono";
+import { backfillEventTotal } from "../collector/backfill";
 import { runCollector } from "../collector/run";
 import type { Env } from "../env";
 import { authenticateAdmin } from "../lib/auth";
@@ -34,6 +35,13 @@ adminRoutes.get("/api/admin/status", async (c) => {
 
 adminRoutes.post("/api/admin/collect", async (c) => {
   const result = await runCollector(c.env, { trigger: "admin" });
+  return c.json(result);
+});
+
+adminRoutes.post("/api/admin/history/backfill", async (c) => {
+  const after = c.req.query("after") || undefined;
+  const limit = Number(c.req.query("limit") ?? "") || undefined;
+  const result = await backfillEventTotal(c.env.DATA, { after, limit });
   return c.json(result);
 });
 

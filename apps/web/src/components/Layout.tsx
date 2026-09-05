@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Activity, BookOpen, Coins, ExternalLink, Github, HeartHandshake, Info, Linkedin, ListChecks, Menu, Newspaper, Radar, Radio, Scale, Settings, Star, Users, WifiOff, X } from "lucide-react";
+import { Activity, BookOpen, Coins, ExternalLink, Github, HeartHandshake, Info, Linkedin, ListChecks, Menu, Newspaper, Radar, Radio, Scale, Settings, Star, TrendingUp, Users, WifiOff, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router";
 import { deltaOver } from "@zevent-radar/radar-engine";
@@ -19,6 +19,7 @@ const TABS = [
 ];
 
 const SECONDARY = [
+  { to: "/cagnotte", label: "Cagnotte année par année", icon: TrendingUp },
   { to: "/feed", label: "Le fil", icon: Newspaper },
   { to: "/goals", label: "Tous les goals", icon: ListChecks },
   { to: "/associations", label: "Les associations", icon: HeartHandshake },
@@ -89,8 +90,8 @@ export function Layout() {
           <img src="/favicon.svg" alt="" width={36} height={36} className="rounded-xl" />
           <span className="text-lg font-extrabold tracking-tight">ZEvent Radar</span>
         </NavLink>
-        <div className="mx-4 rounded-xl border border-border bg-bg px-4 py-3">
-          <p className="text-[11px] font-semibold text-muted uppercase">Cagnotte globale</p>
+        <NavLink to="/cagnotte" className="mx-4 block rounded-xl border border-border bg-bg px-4 py-3 transition hover:border-accent-border" title="Comparer avec les éditions précédentes">
+          <p className="flex items-center justify-between text-[11px] font-semibold text-muted uppercase">Cagnotte globale<TrendingUp size={12} /></p>
           <p className="text-gold-gradient text-2xl font-extrabold tabular-nums">{totalNode}</p>
           <p className="text-xs text-muted">{delta !== null && delta > 0 && <span className="font-semibold text-accent-strong">+{euros(delta)} / 5 min · </span>}{freshness}</p>
           {latest.data && (
@@ -98,7 +99,7 @@ export function Layout() {
               {count(latest.data.event.onlineCount)} en live · {count(latest.data.event.viewerCount)} viewers
             </p>
           )}
-        </div>
+        </NavLink>
         <nav className="mt-4 flex-1 px-3" aria-label="Navigation principale">
           <ul className="space-y-1">
             {TABS.map((tab) => (
@@ -136,10 +137,10 @@ export function Layout() {
               <span className="text-sm font-bold tracking-tight">ZEvent Radar</span>
             </NavLink>
             <div className="flex items-center gap-2">
-              <div className="text-right">
+              <NavLink to="/cagnotte" className="text-right" title="Comparer avec les éditions précédentes">
                 <p className="text-gold-gradient text-lg leading-tight font-extrabold tabular-nums">{totalNode}</p>
                 <p className="flex items-center justify-end gap-1 text-[11px] text-muted">{delta !== null && delta > 0 && <span className="font-semibold text-accent-strong">+{euros(delta)}/5 min ·</span>}{freshness}</p>
-              </div>
+              </NavLink>
               <button type="button" onClick={() => setMenuOpen((v) => !v)} aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={menuOpen} aria-controls="mobile-menu" className="rounded-lg p-2 text-fg hover:bg-surface-2">
                 {menuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>

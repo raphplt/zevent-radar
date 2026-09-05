@@ -13,7 +13,8 @@
     "db:migrate:local": "pnpm --filter @zevent-radar/worker db:migrate:local",
     "goals:import": "tsx scripts/import-goals.ts",
     "goals:seed": "tsx scripts/seed-goals.ts",
-    "vapid:generate": "tsx scripts/generate-vapid.ts"
+    "vapid:generate": "tsx scripts/generate-vapid.ts",
+    "editions:import": "tsx scripts/import-editions.ts"
   },
   "devDependencies": {
     "@types/node": "^26.4.1",

@@ -8,8 +8,10 @@ export const publicRoutes = new Hono<{ Bindings: Env }>();
 const PUBLIC_FILES: Record<string, string> = {
   "latest.json": KEYS.latest,
   "goals.json": KEYS.goals,
-  "status.json": KEYS.status
+  "status.json": KEYS.status,
+  "event-total.json": KEYS.eventTotal
 };
+const PUBLIC_FILE_TTL: Record<string, number> = { "goals.json": 60, "event-total.json": 60 };
 
 async function cached(c: { req: { raw: Request }; executionCtx: { waitUntil(promise: Promise<unknown>): void } }, key: string, ttlSeconds: number, produce: () => Promise<Response>): Promise<Response> {
   const cache = caches.default;
@@ -36,7 +38,7 @@ publicRoutes.get("/data/:file", async (c) => {
   const key = PUBLIC_FILES[file];
   if (!key) return c.notFound();
   return withCors(
-    await cached(c, `/data/${file}`, file === "goals.json" ? 60 : 15, async () => {
+    await cached(c, `/data/${file}`, PUBLIC_FILE_TTL[file] ?? 15, async () => {
       const object = await c.env.DATA.get(key);
       if (!object) return c.json({ error: "not ready" }, 503, { "cache-control": "no-store" });
       return new Response(object.body, {

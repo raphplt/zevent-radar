@@ -35,6 +35,15 @@
   --accent-border: #99d699;
   --bevel-top: #ffffff;
   --bevel-bottom: #cfcfcf;
+  /* Edition colours for the comparison chart: one hue per year, re-stepped for dark mode below. */
+  --ed-2026: #00bd00;
+  --ed-2025: #eda100;
+  --ed-2024: #2a78d6;
+  --ed-2022: #7c3aed;
+  --ed-2021: #e87ba4;
+  --ed-2020: #d03b3b;
+  --ed-2019: #0d9488;
+  --ed-2018: #8a8a8a;
   color-scheme: light;
 }
 
@@ -50,6 +59,14 @@
   --accent-border: #004b00;
   --bevel-top: #383838;
   --bevel-bottom: #080808;
+  --ed-2026: #33ca33;
+  --ed-2025: #eda100;
+  --ed-2024: #3987e5;
+  --ed-2022: #a78bfa;
+  --ed-2021: #f472b6;
+  --ed-2020: #ef4444;
+  --ed-2019: #2dd4bf;
+  --ed-2018: #9c9c9c;
   color-scheme: dark;
 }
 

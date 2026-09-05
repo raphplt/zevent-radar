@@ -1,4 +1,5 @@
 import type {
+  EventTotalFile,
   GoalRecord,
   GoalsFile,
   HistoryFile,
@@ -13,7 +14,7 @@ import type {
   StreamerLocation,
   ZeventLiveEntry
 } from "@zevent-radar/contracts";
-import { appendPoint, detectReachedGoals, evaluateStreamer, rankRadar, toPublicGoal } from "@zevent-radar/radar-engine";
+import { appendPoint, detectReachedGoals, EVENT_TOTAL_HISTORY_OPTIONS, evaluateStreamer, rankRadar, toPublicGoal } from "@zevent-radar/radar-engine";
 import type { Env } from "../env";
 import { runBatch } from "../lib/db";
 import { nowIso as isoNow, uuid } from "../lib/ids";
@@ -29,6 +30,7 @@ const GLOBAL_DROP_RATIO = 0.1;
 const RECENT_EVENTS_LIMIT = 40;
 const SNAPSHOT_CACHE = "public, max-age=31536000, immutable";
 const LATEST_CACHE = "public, max-age=5";
+const EVENT_TOTAL_CACHE = "public, max-age=60";
 
 interface EventInsert {
   key: string;
@@ -150,10 +152,11 @@ export interface CollectResult {
 export async function runCollector(env: Env, options: { trigger: string } = { trigger: "cron" }): Promise<CollectResult> {
   const started = Date.now();
   const nowIso = new Date(started).toISOString();
-  const [state, goalsFile, history] = await Promise.all([
+  const [state, goalsFile, history, eventTotalFile] = await Promise.all([
     loadState(env.DATA),
     readJson<GoalsFile>(env.DATA, KEYS.goals),
-    readJson<HistoryFile>(env.DATA, KEYS.history)
+    readJson<HistoryFile>(env.DATA, KEYS.history),
+    readJson<EventTotalFile>(env.DATA, KEYS.eventTotal)
   ]);
   const [appResult, eventTotalCents] = await Promise.all([fetchApp(env, state, nowIso), fetchEventTotal(env, state, nowIso)]);
   const app = appResult.app;
@@ -179,6 +182,7 @@ export async function runCollector(env: Env, options: { trigger: string } = { tr
   const previousTotal = state.previousEventTotal;
   const totalCents = acceptEventTotal(state, eventTotalCents, app.donationAmount ? Math.round(app.donationAmount.number * 100) : null);
   const nextEventSeries = appendPoint(eventSeries, [started, totalCents]);
+  const nextEventTotal: EventTotalFile = { updatedAt: nowIso, points: appendPoint(eventTotalFile?.points ?? [], [started, totalCents], EVENT_TOTAL_HISTORY_OPTIONS) };
   const statements: D1PreparedStatement[] = [];
   const inserts: EventInsert[] = [];
   const reachedGoalIds = new Set<string>();
@@ -371,6 +375,7 @@ export async function runCollector(env: Env, options: { trigger: string } = { tr
     writeJson(env.DATA, KEYS.latest, latest, LATEST_CACHE),
     writeJson(env.DATA, KEYS.snapshot(nowIso.replace(/[:.]/g, "-")), snapshot, SNAPSHOT_CACHE),
     writeJson(env.DATA, KEYS.history, historyFile),
+    writeJson(env.DATA, KEYS.eventTotal, nextEventTotal, EVENT_TOTAL_CACHE),
     nextGoalsFile ? writeJson(env.DATA, KEYS.goals, nextGoalsFile, LATEST_CACHE) : Promise.resolve(),
     saveState(env.DATA, state),
     writeStatus(env, state, latest, nextGoalsFile ?? goalsFile, radar, nowIso, stale)

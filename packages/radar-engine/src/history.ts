@@ -14,6 +14,14 @@ export const DEFAULT_HISTORY_OPTIONS: HistoryOptions = {
   coarseStepMs: 5 * 60 * 1000
 };
 
+/** Whole-edition series for the global total: one point every 5 minutes, kept for two weeks. */
+export const EVENT_TOTAL_HISTORY_OPTIONS: HistoryOptions = {
+  retentionMs: 14 * 24 * 60 * 60 * 1000,
+  checkpointMs: 5 * 60 * 1000,
+  fineWindowMs: 0,
+  coarseStepMs: 5 * 60 * 1000
+};
+
 export function appendPoint(
   series: HistoryPoint[],
   point: HistoryPoint,
@@ -70,4 +78,14 @@ export function deltaOver(series: HistoryPoint[], nowTs: number, windowMs: numbe
   const before = valueAt(series, nowTs - windowMs);
   if (current === null || before === null) return null;
   return current - before;
+}
+
+/** Merges two series (later duplicates of a timestamp are ignored), sorts them and thins the result to `stepMs`. */
+export function mergeSeries(base: HistoryPoint[], extra: HistoryPoint[], stepMs: number): HistoryPoint[] {
+  const byTs = new Map<number, number>();
+  for (const [ts, cents] of base) byTs.set(ts, cents);
+  for (const [ts, cents] of extra) if (!byTs.has(ts)) byTs.set(ts, cents);
+  const merged: HistoryPoint[] = [...byTs.entries()].sort((a, b) => a[0] - b[0]);
+  const last = merged[merged.length - 1];
+  return last ? thin(merged, last[0], stepMs) : merged;
 }

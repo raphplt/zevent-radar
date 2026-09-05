@@ -1,5 +1,5 @@
 import type { HistoryPoint } from "@zevent-radar/contracts";
-import { appendPoint, deltaOver, prune, thin, valueAt } from "./history";
+import { appendPoint, deltaOver, EVENT_TOTAL_HISTORY_OPTIONS, mergeSeries, prune, thin, valueAt } from "./history";
 
 const MIN = 60_000;
 
@@ -70,5 +70,25 @@ describe("deltaOver", () => {
     ];
     expect(deltaOver(series, 6 * MIN, 5 * MIN)).toBe(100);
     expect(deltaOver(series, 2 * MIN, 5 * MIN)).toBeNull();
+  });
+});
+
+describe("mergeSeries", () => {
+  it("interleaves two series, drops duplicate timestamps and thins to the step", () => {
+    const base: HistoryPoint[] = [[0, 1], [5 * MIN, 2], [10 * MIN, 3]];
+    const extra: HistoryPoint[] = [[2 * MIN, 9], [5 * MIN, 99], [15 * MIN, 4]];
+    expect(mergeSeries(base, extra, 5 * MIN)).toEqual([[0, 1], [5 * MIN, 2], [10 * MIN, 3], [15 * MIN, 4]]);
+  });
+
+  it("returns an empty series when both are empty", () => {
+    expect(mergeSeries([], [], MIN)).toEqual([]);
+  });
+});
+
+describe("EVENT_TOTAL_HISTORY_OPTIONS", () => {
+  it("keeps one point every five minutes plus the most recent one", () => {
+    let series: HistoryPoint[] = [];
+    for (let i = 0; i <= 20; i += 1) series = appendPoint(series, [i * MIN, i], EVENT_TOTAL_HISTORY_OPTIONS);
+    expect(series.map((p) => p[0] / MIN)).toEqual([0, 5, 10, 15, 19, 20]);
   });
 });

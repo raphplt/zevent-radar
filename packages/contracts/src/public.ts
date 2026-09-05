@@ -135,6 +135,12 @@ export interface HistoryFile {
   eventTotal: HistoryPoint[];
 }
 
+/** Global total for the whole edition, one point every few minutes, published as `event-total.json`. */
+export interface EventTotalFile {
+  updatedAt: string;
+  points: HistoryPoint[];
+}
+
 export interface StreamerHistoryResponse {
   streamerId: string;
   updatedAt: string;

@@ -15,6 +15,7 @@ data/
   initial-goals.json  Export InGDoc au format canonique d'import
 scripts/
   import-goals.ts     Récupère les goals depuis l'API InGDoc → data/initial-goals.json
+  import-editions.ts  Compile les courbes des éditions passées → apps/web/src/data/editions.json
   seed-goals.ts       Pousse un fichier d'import vers l'API admin
   generate-vapid.ts   Génère une paire de clés VAPID
 ```
@@ -38,7 +39,13 @@ Les montants InGDoc sont en centimes, ceux de ZEvent en euros : tout est normali
 Navigateur → /data/latest.json (R2, cache 15 s) → PWA
 ```
 
-Le collector publie chaque minute dans R2 : `latest.json`, `goals.json`, `status.json`, `snapshots/{ts}.json`, et un historique interne compact (24 h, résolution fine sur 6 h puis un point toutes les 5 min) pour les ETA et les courbes. D1 ne reçoit que les événements significatifs (paliers, lives, signalements, abonnements).
+Le collector publie chaque minute dans R2 : `latest.json`, `goals.json`, `status.json`, `event-total.json` (cagnotte globale sur toute l'édition, un point toutes les 5 min), `snapshots/{ts}.json`, et un historique interne compact (24 h, résolution fine sur 6 h puis un point toutes les 5 min) pour les ETA et les courbes. D1 ne reçoit que les événements significatifs (paliers, lives, signalements, abonnements).
+
+Si `event-total.json` est créé après le début de l'édition, `POST /api/admin/history/backfill` le reconstruit depuis les snapshots (300 snapshots par appel, rappeler avec `?after=<nextAfter>` jusqu'à `null`) :
+
+```bash
+curl -X POST -H "authorization: Bearer $ADMIN_TOKEN" "https://zgoals.xyz/api/admin/history/backfill"
+```
 
 ## Démarrage local
 
@@ -67,6 +74,7 @@ Le cron minute peut aussi être déclenché avec `curl "http://localhost:8787/__
 pnpm test              # radar-engine + web
 pnpm typecheck
 pnpm goals:import      # régénère data/initial-goals.json depuis InGDoc
+pnpm editions:import   # régénère apps/web/src/data/editions.json (courbes 2018-2025, source ZEvenTracker)
 pnpm vapid:generate
 pnpm deploy            # build web + wrangler deploy
 ```
@@ -87,11 +95,11 @@ pnpm deploy            # build web + wrangler deploy
 
 | Route | Rôle |
 | --- | --- |
-| `GET /data/latest.json`, `goals.json`, `status.json`, `history/:id`, `snapshots/:ts` | Données publiques (R2 + cache) |
+| `GET /data/latest.json`, `goals.json`, `status.json`, `event-total.json`, `history/:id`, `snapshots/:ts` | Données publiques (R2 + cache) |
 | `GET /api/health` | Santé rapide |
 | `GET /api/community`, `POST /api/reports`, `POST /api/reports/:id/confirm` | Communauté |
 | `GET /api/push/vapid-public-key`, `POST /api/push/subscribe`, `POST /api/push/unsubscribe`, `GET/PUT /api/push/preferences`, `POST /api/push/test` | Web Push |
-| `POST /api/admin/collect`, `POST /api/admin/goals/sync`, `POST /api/admin/goals/import?dryRun=1&mode=merge|sync` | Ingestion |
+| `POST /api/admin/collect`, `POST /api/admin/goals/sync`, `POST /api/admin/goals/import?dryRun=1&mode=merge|sync`, `POST /api/admin/history/backfill?after=&limit=` | Ingestion |
 | `GET/POST /api/admin/goals`, `PATCH /api/admin/goals/:id`, `GET /api/admin/goals/duplicates` | Catalogue |
 | `GET /api/admin/reports`, `POST /api/admin/reports/:id/decision`, `GET /api/admin/audit`, `GET /api/admin/events`, `GET /api/admin/status` | Modération |
 
@@ -111,6 +119,7 @@ Format d'import des goals (euros) :
 - `/` radar : goals imminents en tête avec compte à rebours, puis goals à portée, fil des événements et signalements.
 - `/streamers/:login/watch` : mode « en direct » plein écran sur le prochain goal d'un streamer (montant animé, reste, ETA, delta 5 min).
 - `/streamers?live=live&max=100000` : les filtres d'Explorer vivent dans l'URL et se partagent.
+- `/cagnotte` : la cagnotte 2026 face aux éditions 2018-2025 (courbes calées sur le vendredi 18 h ou sur l'ouverture des dons, écart au même stade, course aux millions).
 
 ## Moteur du radar
 

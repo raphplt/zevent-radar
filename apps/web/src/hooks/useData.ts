@@ -1,4 +1,4 @@
-import type { BulkHistoryResponse, CommunityReport, EventsResponse, GoalsFile, PublicEventKind, PublicState, PublicStatusFile, StreamerHistoryResponse } from "@zevent-radar/contracts";
+import type { BulkHistoryResponse, CommunityReport, EventsResponse, EventTotalFile, GoalsFile, PublicEventKind, PublicState, PublicStatusFile, StreamerHistoryResponse } from "@zevent-radar/contracts";
 import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { api, getData } from "@/lib/api";
@@ -120,6 +120,20 @@ export function useEvents(kind: PublicEventKind | null, streamerId?: string) {
     refetchInterval: 30_000,
     staleTime: 15_000
   });
+}
+
+/** Whole-edition global total, one point every five minutes. Falls back to the 24 h history while the file is not published. */
+export function useEventTotalHistory() {
+  const long = useQuery({
+    queryKey: ["event-total-history"],
+    queryFn: ({ signal }) => getData<EventTotalFile>("/event-total.json", signal),
+    refetchInterval: 60_000,
+    staleTime: 30_000,
+    retry: 1
+  });
+  const short = useEventHistory();
+  const points = long.data?.points ?? (long.isError ? short.data?.points : undefined);
+  return { points, partial: !long.data && long.isError, isPending: long.isPending || (long.isError && short.isPending), updatedAt: long.data?.updatedAt ?? short.data?.updatedAt };
 }
 
 export function useEventHistory() {

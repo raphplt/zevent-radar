@@ -22,6 +22,7 @@ import { StreamerPage } from "@/routes/Streamer";
 import { WatchPage } from "@/routes/Watch";
 
 const AdminPage = lazy(() => import("@/routes/Admin").then((m) => ({ default: m.AdminPage })));
+const EditionsPage = lazy(() => import("@/routes/Editions").then((m) => ({ default: m.EditionsPage })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,6 +65,14 @@ export function App() {
             <Route path="status" element={<StatusPage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="associations" element={<AssociationsPage />} />
+            <Route
+              path="cagnotte"
+              element={
+                <Suspense fallback={<Spinner />}>
+                  <EditionsPage />
+                </Suspense>
+              }
+            />
             <Route path="legal" element={<LegalPage />} />
             <Route
               path="admin"

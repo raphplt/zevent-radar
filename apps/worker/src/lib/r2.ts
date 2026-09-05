@@ -2,6 +2,7 @@ export const KEYS = {
   latest: "latest.json",
   goals: "goals.json",
   status: "status.json",
+  eventTotal: "event-total.json",
   internalStatus: "internal/status.json",
   history: "internal/history.json",
   state: "internal/state.json",
