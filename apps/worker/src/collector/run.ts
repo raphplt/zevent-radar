@@ -14,7 +14,7 @@ import type {
   StreamerLocation,
   ZeventLiveEntry
 } from "@zevent-radar/contracts";
-import { appendPoint, detectReachedGoals, EVENT_TOTAL_HISTORY_OPTIONS, evaluateStreamer, rankRadar, toPublicGoal } from "@zevent-radar/radar-engine";
+import { appendPoint, detectReachedGoals, EVENT_TOTAL_HISTORY_OPTIONS, evaluateStreamer, mergeSeries, rankRadar, toPublicGoal } from "@zevent-radar/radar-engine";
 import type { Env } from "../env";
 import { runBatch } from "../lib/db";
 import { nowIso as isoNow, uuid } from "../lib/ids";
@@ -182,7 +182,7 @@ export async function runCollector(env: Env, options: { trigger: string } = { tr
   const previousTotal = state.previousEventTotal;
   const totalCents = acceptEventTotal(state, eventTotalCents, app.donationAmount ? Math.round(app.donationAmount.number * 100) : null);
   const nextEventSeries = appendPoint(eventSeries, [started, totalCents]);
-  const nextEventTotal: EventTotalFile = { updatedAt: nowIso, points: appendPoint(eventTotalFile?.points ?? [], [started, totalCents], EVENT_TOTAL_HISTORY_OPTIONS) };
+  const nextEventTotal: EventTotalFile = { updatedAt: nowIso, points: appendPoint(eventTotalFile?.points ?? mergeSeries([], eventSeries, EVENT_TOTAL_HISTORY_OPTIONS.coarseStepMs), [started, totalCents], EVENT_TOTAL_HISTORY_OPTIONS) };
   const statements: D1PreparedStatement[] = [];
   const inserts: EventInsert[] = [];
   const reachedGoalIds = new Set<string>();

@@ -1,4 +1,4 @@
-import { Radar as RadarIcon } from "lucide-react";
+import { ArrowRight, Radar as RadarIcon } from "lucide-react";
 import { Link } from "react-router";
 import { AssociationsBanner } from "@/components/AssociationsBanner";
 import { Feed } from "@/components/Feed";
@@ -84,8 +84,12 @@ export function RadarPage() {
 
         <div className="mt-6 space-y-6 lg:mt-0">
           <section>
-            <SectionTitle action={<Link to="/feed" className="text-xs text-accent-strong">Tout le fil</Link>}>Fil</SectionTitle>
+            <SectionTitle>Fil</SectionTitle>
             <Feed events={state.recentEvents} reports={moments} limit={12} />
+            <Link to="/feed" className="bevel-neutral mt-3 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-surface-2 px-4 text-sm font-bold text-fg transition hover:bg-border">
+              Voir tout le fil
+              <ArrowRight size={16} />
+            </Link>
           </section>
           <section>
             <SectionTitle action={<Link to="/live" className="text-xs text-accent-strong">Tous les lives</Link>}>En ce moment</SectionTitle>

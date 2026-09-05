@@ -1,4 +1,4 @@
-import type { BulkHistoryResponse, CommunityReport, EventsResponse, EventTotalFile, GoalsFile, PublicEventKind, PublicState, PublicStatusFile, StreamerHistoryResponse } from "@zevent-radar/contracts";
+import type { BulkHistoryResponse, CommunityReport, EventsResponse, EventTotalFile, GoalsFile, HistoryPoint, PublicEventKind, PublicState, PublicStatusFile, StreamerHistoryResponse } from "@zevent-radar/contracts";
 import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { api, getData } from "@/lib/api";
@@ -132,8 +132,21 @@ export function useEventTotalHistory() {
     retry: 1
   });
   const short = useEventHistory();
-  const points = long.data?.points ?? (long.isError ? short.data?.points : undefined);
+  const points = useMemo(() => {
+    if (!long.data && !short.data) return undefined;
+    return mergeHistoryPoints(long.data?.points ?? [], short.data?.points ?? []);
+  }, [long.data, short.data]);
   return { points, partial: !long.data && long.isError, isPending: long.isPending || (long.isError && short.isPending), updatedAt: long.data?.updatedAt ?? short.data?.updatedAt };
+}
+
+/** Union of two histories keyed by timestamp, sorted; the first series wins on ties. */
+export function mergeHistoryPoints(base: HistoryPoint[], extra: HistoryPoint[]): HistoryPoint[] {
+  if (extra.length === 0) return base;
+  if (base.length === 0) return extra;
+  const byTs = new Map<number, number>();
+  for (const [ts, cents] of extra) byTs.set(ts, cents);
+  for (const [ts, cents] of base) byTs.set(ts, cents);
+  return [...byTs.entries()].sort((a, b) => a[0] - b[0]);
 }
 
 export function useEventHistory() {

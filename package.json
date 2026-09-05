@@ -14,7 +14,8 @@
     "goals:import": "tsx scripts/import-goals.ts",
     "goals:seed": "tsx scripts/seed-goals.ts",
     "vapid:generate": "tsx scripts/generate-vapid.ts",
-    "editions:import": "tsx scripts/import-editions.ts"
+    "editions:import": "tsx scripts/import-editions.ts",
+    "history:backfill": "bash scripts/backfill-history.sh"
   },
   "devDependencies": {
     "@types/node": "^26.4.1",

@@ -95,6 +95,9 @@ export function valueAtOffset(points: OffsetPoint[], offset: number): Reading | 
 
 /** First offset at which the series reaches `cents`, or null if it never did. */
 export function offsetForAmount(points: OffsetPoint[], cents: number): number | null {
+  const first = points[0];
+  // Reached before the series starts: the moment is unknown, not the first sample.
+  if (!first || first[1] >= cents) return null;
   for (const [m, c] of points) if (c >= cents) return m;
   return null;
 }

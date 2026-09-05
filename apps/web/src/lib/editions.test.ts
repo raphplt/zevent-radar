@@ -48,6 +48,11 @@ describe("offsetForAmount", () => {
     expect(offsetForAmount(edition.points, 300_00)).toBe(600);
     expect(offsetForAmount(edition.points, 2_000_00)).toBeNull();
   });
+
+  it("does not know when a series that starts above the amount reached it", () => {
+    expect(offsetForAmount([[1100, 4_000_000_00], [1105, 4_100_000_00]], 1_000_000_00)).toBeNull();
+    expect(offsetForAmount([], 1)).toBeNull();
+  });
 });
 
 describe("labels", () => {

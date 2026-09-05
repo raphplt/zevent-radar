@@ -44,8 +44,12 @@ Le collector publie chaque minute dans R2 : `latest.json`, `goals.json`, `status
 Si `event-total.json` est créé après le début de l'édition, `POST /api/admin/history/backfill` le reconstruit depuis les snapshots (300 snapshots par appel, rappeler avec `?after=<nextAfter>` jusqu'à `null`) :
 
 ```bash
+pnpm history:backfill   # boucle sur les pages, lit ADMIN_TOKEN dans .deploy-secrets.env
+# ou à la main :
 curl -X POST -H "authorization: Bearer $ADMIN_TOKEN" "https://zgoals.xyz/api/admin/history/backfill"
 ```
+
+Le collector amorce aussi `event-total.json` avec l'historique 24 h la première fois qu'il le crée, et la page `/cagnotte` fusionne toujours les deux sources.
 
 ## Démarrage local
 

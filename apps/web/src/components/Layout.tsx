@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Activity, BookOpen, Coins, ExternalLink, Github, HeartHandshake, Info, Linkedin, ListChecks, Menu, Newspaper, Radar, Radio, Scale, Settings, Star, TrendingUp, Users, WifiOff, X } from "lucide-react";
+import { Activity, BookOpen, Coins, ExternalLink, Github, HeartHandshake, Info, Linkedin, ListChecks, Menu, Radar, Radio, Scale, Settings, Star, TrendingUp, Users, WifiOff, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router";
 import { deltaOver } from "@zevent-radar/radar-engine";
@@ -20,7 +20,6 @@ const TABS = [
 
 const SECONDARY = [
   { to: "/cagnotte", label: "Cagnotte année par année", icon: TrendingUp },
-  { to: "/feed", label: "Le fil", icon: Newspaper },
   { to: "/goals", label: "Tous les goals", icon: ListChecks },
   { to: "/associations", label: "Les associations", icon: HeartHandshake },
   { to: "/settings", label: "Réglages", icon: Settings },

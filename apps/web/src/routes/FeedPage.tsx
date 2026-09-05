@@ -1,7 +1,7 @@
 import type { CommunityReport, PublicEvent, PublicEventKind } from "@zevent-radar/contracts";
-import { Newspaper, Star } from "lucide-react";
+import { ArrowLeft, Newspaper, Star } from "lucide-react";
 import { useMemo } from "react";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { Feed } from "@/components/Feed";
 import { Button, Chips, EmptyState, Skeleton, Spinner } from "@/components/ui";
 import { useCommunity, useEvents, useLatest } from "@/hooks/useData";
@@ -57,6 +57,10 @@ export function FeedPage() {
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between gap-3">
+        <Link to="/" className="inline-flex items-center gap-1 text-xs text-muted"><ArrowLeft size={14} />Radar</Link>
+        <h1 className="text-base font-bold tracking-tight">Le fil</h1>
+      </div>
       <div className="flex flex-wrap items-center gap-2">
         <div className="no-scrollbar flex max-w-full gap-2 overflow-x-auto pb-1">
           <Chips value={filter} onChange={(v) => update("kind", v)} options={FILTERS} />
